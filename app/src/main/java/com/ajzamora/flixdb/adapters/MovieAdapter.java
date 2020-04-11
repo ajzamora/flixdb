@@ -4,11 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ajzamora.flixdb.R;
+import com.squareup.picasso.Picasso;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
@@ -40,15 +41,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public final class MovieViewHolder extends RecyclerView.ViewHolder {
-        TextView mListItemMovieView;
+        ImageView mItemMovieIV;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-            mListItemMovieView = (TextView) itemView.findViewById(R.id.textview_item_movie);
+            mItemMovieIV = (ImageView) itemView.findViewById(R.id.imageview_item_movie);
         }
 
-        void bind(int listItemIndex) {
-            mListItemMovieView.setText(String.valueOf(listItemIndex));
+        void bind(int currentItemMovie) {
+            Picasso.get()
+                    .load(android.R.drawable.ic_media_play)
+                    .into(mItemMovieIV);
         }
     }
 }
