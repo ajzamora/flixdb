@@ -1,12 +1,14 @@
 package com.ajzamora.flixdb;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
 import com.ajzamora.flixdb.adapters.MovieAdapter;
+import com.ajzamora.flixdb.utils.LayoutUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,8 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void initUI() {
         mMainRV = (RecyclerView) findViewById(R.id.recyclerview_main);
-        mMainRV.setLayoutManager(new LinearLayoutManager(this));
+        int mNoOfColumns = LayoutUtils.calculateNoOfColumns(getApplicationContext(), 100);
+        mMainRV.setLayoutManager(new GridLayoutManager(this, mNoOfColumns));
         mMainRV.setHasFixedSize(true);
+
         mMovieAdapter = new MovieAdapter(NUM_LIST_ITEMS);
         mMainRV.setAdapter(mMovieAdapter);
     }
