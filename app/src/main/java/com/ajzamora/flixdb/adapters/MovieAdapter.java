@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private int mNumOfItems;
+    private final String tempImagePath = "https://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
 
     public MovieAdapter(int numOfItems) {
         mNumOfItems = numOfItems;
@@ -50,7 +51,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         void bind(int currentItemMovie) {
             Picasso.get()
-                    .load(android.R.drawable.ic_media_play)
+                    .load(tempImagePath)
                     .into(mItemMovieIV);
         }
     }
