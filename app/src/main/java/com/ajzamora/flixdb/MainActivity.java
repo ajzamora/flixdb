@@ -2,7 +2,6 @@ package com.ajzamora.flixdb;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void initUI() {
         mMainRV = (RecyclerView) findViewById(R.id.recyclerview_main);
-        int mNoOfColumns = LayoutUtils.calculateNoOfColumns(getApplicationContext(), 100);
+        int mNoOfColumns = LayoutUtils.calculateNoOfColumns(getApplicationContext(), Integer.valueOf(getString(R.string.item_movie_columnWidth)));
         mMainRV.setLayoutManager(new GridLayoutManager(this, mNoOfColumns));
         mMainRV.setHasFixedSize(true);
 

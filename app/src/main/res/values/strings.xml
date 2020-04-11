@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FlixDB</string>
+    <string name="item_movie_columnWidth">120</string>
 </resources>
