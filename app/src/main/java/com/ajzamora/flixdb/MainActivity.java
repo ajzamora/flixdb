@@ -1,7 +1,10 @@
 package com.ajzamora.flixdb;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,12 +17,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ajzamora.flixdb.adapters.MovieAdapter;
+import com.ajzamora.flixdb.loaders.MovieLoader;
+import com.ajzamora.flixdb.models.FlixPrefences;
+import com.ajzamora.flixdb.models.Movie;
 import com.ajzamora.flixdb.utils.LayoutUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+        implements SharedPreferences.OnSharedPreferenceChangeListener,
+        LoaderManager.LoaderCallbacks<List<Movie>> {
 
     public final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final int MOVIE_LOADER_ID = 1;
     private static final int NUM_LIST_ITEMS = 100;
 
     private MovieAdapter mMovieAdapter;
@@ -32,6 +43,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
+
+
+        LoaderManager loaderManager = getSupportLoaderManager();
+        loaderManager.initLoader(MOVIE_LOADER_ID, null, this);
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
@@ -84,5 +99,24 @@ public class MainActivity extends AppCompatActivity
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @NonNull
+    @Override
+    public Loader<List<Movie>> onCreateLoader(int id, @Nullable Bundle args) {
+        return new MovieLoader(this, FlixPrefences.getPreferredAPI(this));
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<List<Movie>> loader, List<Movie> movies) {
+        mMovieAdapter.setData(new ArrayList<Movie>());
+        if (movies != null && !movies.isEmpty()) {
+            mMovieAdapter.setData(movies);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<List<Movie>> loader) {
+        mMovieAdapter.setData(new ArrayList<Movie>());
     }
 }

@@ -9,11 +9,15 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ajzamora.flixdb.R;
+import com.ajzamora.flixdb.models.Movie;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private int mNumOfItems;
+    private List<Movie> mMovies;
     private final String tempImagePath = "https://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
 
     public MovieAdapter(int numOfItems) {
@@ -54,5 +58,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .load(tempImagePath)
                     .into(mItemMovieIV);
         }
+    }
+
+    public void setData(List<Movie> movies) {
+        mMovies = movies;
+        mNumOfItems = mMovies.size();
+        notifyDataSetChanged();
     }
 }
