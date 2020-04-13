@@ -12,15 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DetailActivity"
+        <activity
+            android:name=".DetailActivity"
             android:label="@string/activity_details_label"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" /></activity>
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/activity_settings_label">
+            android:label="@string/activity_settings_label"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
