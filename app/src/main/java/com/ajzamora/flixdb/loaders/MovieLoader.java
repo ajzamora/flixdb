@@ -23,11 +23,9 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
     private String mApiKey;
     private String mSortOrder;
     private List<Movie> mMovies;
-    private Context mContext;
 
     public MovieLoader(Context context, String apiKey, String sortOrder) {
         super(context);
-        mContext = context;
         mApiKey = apiKey;
         mSortOrder = sortOrder;
     }

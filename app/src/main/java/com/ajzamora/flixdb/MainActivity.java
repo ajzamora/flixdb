@@ -68,11 +68,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void initUI() {
-        mIndicatorPb = (ProgressBar) findViewById(R.id.pb_indicator_main);
-        mEmptyStateTV = (TextView) findViewById(R.id.tv_empty_main);
-        mEmptyIconIV = (ImageView) findViewById(R.id.iv_empty_icon_main);
-        mEmptyIconLabelTV = (TextView) findViewById(R.id.tv_empty_icon_label_main);
-        mMainRV = (RecyclerView) findViewById(R.id.rv_movie_main);
+        mIndicatorPb = findViewById(R.id.pb_indicator_main);
+        mEmptyStateTV = findViewById(R.id.tv_empty_main);
+        mEmptyIconIV = findViewById(R.id.iv_empty_icon_main);
+        mEmptyIconLabelTV = findViewById(R.id.tv_empty_icon_label_main);
+        mMainRV = findViewById(R.id.rv_movie_main);
         int mNoOfColumns = LayoutUtils.calculateNoOfColumns(getApplicationContext(), Integer.valueOf(getString(R.string.item_movie_columnWidth)));
         mMainRV.setLayoutManager(new GridLayoutManager(this, mNoOfColumns));
         mMainRV.setHasFixedSize(true);
