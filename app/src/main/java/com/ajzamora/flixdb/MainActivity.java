@@ -28,7 +28,9 @@ import com.ajzamora.flixdb.loaders.MovieLoader;
 import com.ajzamora.flixdb.models.FlixPreferences;
 import com.ajzamora.flixdb.models.Movie;
 import com.ajzamora.flixdb.utils.LayoutUtils;
+import com.ajzamora.flixdb.utils.NetworkUtils;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,8 +159,11 @@ public class MainActivity extends AppCompatActivity
         if (movies != null && !movies.isEmpty()) {
             mMovieAdapter.setData(movies);
         } else {
-            mEmptyStateTV.setText(getString(R.string.main_emptystate_no_movies));
-            setEmptyState(R.string.main_emptystate_no_movies, R.drawable.ic_sad, R.string.main_emptystate_icon_sad);
+            if (NetworkUtils.STATUS_CODE == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                setEmptyState(R.string.main_emptystate_api_invalid, R.drawable.ic_smart_key, R.string.main_emptystate_api_instructions);
+            } else {
+                setEmptyState(R.string.main_emptystate_no_movies, R.drawable.ic_sad, R.string.main_emptystate_icon_sad);
+            }
         }
     }
 
