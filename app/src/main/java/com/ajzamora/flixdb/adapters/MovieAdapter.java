@@ -17,9 +17,15 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private List<Movie> mMovies;
+    final private RecyclerItemClickListener mOnClickListener;
 
-    public MovieAdapter(List<Movie> movies) {
+    public MovieAdapter(List<Movie> movies, RecyclerItemClickListener listener) {
         mMovies = movies;
+        mOnClickListener = listener;
+    }
+
+    public interface RecyclerItemClickListener {
+        void onListItemClick(Movie clickedItemIndex);
     }
 
     @NonNull
@@ -44,13 +50,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return mMovies.size();
     }
 
-    public final class MovieViewHolder extends RecyclerView.ViewHolder {
+    public final class MovieViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
         ImageView mItemMovieIV;
         Movie mCurrentMovie;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
             mItemMovieIV = (ImageView) itemView.findViewById(R.id.imageview_item_movie);
+            itemView.setOnClickListener(this);
         }
 
         void bind(Movie currentMovie) {
@@ -58,6 +66,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             Picasso.get()
                     .load(currentMovie.getThumbnail())
                     .into(mItemMovieIV);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mOnClickListener.onListItemClick(mCurrentMovie);
         }
     }
 

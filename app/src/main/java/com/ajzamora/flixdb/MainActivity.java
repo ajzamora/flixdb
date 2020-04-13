@@ -27,7 +27,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener,
-        LoaderManager.LoaderCallbacks<List<Movie>> {
+        LoaderManager.LoaderCallbacks<List<Movie>>,
+        MovieAdapter.RecyclerItemClickListener {
 
     public final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_LOADER_ID = 1;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         mMainRV.setLayoutManager(new GridLayoutManager(this, mNoOfColumns));
         mMainRV.setHasFixedSize(true);
 
-        mMovieAdapter = new MovieAdapter(new ArrayList<Movie>());
+        mMovieAdapter = new MovieAdapter(new ArrayList<Movie>(), this);
         mMainRV.setAdapter(mMovieAdapter);
     }
 
@@ -122,5 +123,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoaderReset(@NonNull Loader<List<Movie>> loader) {
         mMovieAdapter.clear();
+    }
+
+    @Override
+    public void onListItemClick(Movie clickedItemIndex) {
+        launchDetailActivity(clickedItemIndex);
+    }
+
+    private void launchDetailActivity(Movie currentMovie) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_MOVIE, currentMovie);
+        startActivity(intent);
     }
 }

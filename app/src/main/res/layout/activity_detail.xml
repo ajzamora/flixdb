@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/detail_constraint_margin_top">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_thumbnail_detail"
+            android:layout_width="@dimen/detail_thumbnail_width"
+            android:layout_height="@dimen/detail_thumbnail_height"
+            app:layout_constraintBottom_toTopOf="@id/tv_title_detail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title_detail"
+            android:layout_width="@dimen/all_width_none"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_title_margin_start"
+            android:layout_marginLeft="@dimen/detail_title_margin_left"
+            android:layout_marginTop="@dimen/detail_title_margin_top"
+            android:gravity="center_horizontal"
+            android:maxLines="@integer/detail_title_maxlines"
+            android:text="center"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/detail_title_text_size"
+            app:layout_constraintBottom_toTopOf="@id/iv_dateico_detail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_thumbnail_detail"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_dateico_detail"
+            android:layout_width="@dimen/detail_dateico_width"
+            android:layout_height="@dimen/detail_dateico_height"
+            android:src="@android:drawable/ic_menu_my_calendar"
+            app:layout_constraintEnd_toStartOf="@id/tv_date_detail"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_detail" />
+
+        <TextView
+            android:id="@+id/tv_date_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/detail_date_height"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/detail_date_textsize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_dateico_detail"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_detail"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_ratingico_detail"
+            android:layout_width="@dimen/detail_ratingico_layout_width"
+            android:layout_height="@dimen/detail_ratingico_layout_height"
+            android:src="@android:drawable/btn_star"
+            app:layout_constraintEnd_toStartOf="@id/tv_rating_detail"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_date_detail" />
+
+        <TextView
+            android:id="@+id/tv_rating_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/detail_rating_textsize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_ratingico_detail"
+            app:layout_constraintTop_toBottomOf="@id/tv_date_detail" />
+
+        <TextView
+            android:id="@+id/tv_plot_detail"
+            android:layout_width="@dimen/all_width_none"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_plot_margin_start"
+            android:layout_marginLeft="@dimen/detail_plot_margin_left"
+            android:layout_marginTop="@dimen/detail_plot_margin_top"
+            android:layout_marginEnd="@dimen/detail_plot_margin_end"
+            android:layout_marginRight="@dimen/detail_plot_margin_right"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/detail_plot_textsize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_rating_detail"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,5 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="item_margin_vertical">8dp</dimen>
+    <!--    dimensions for all layouts-->
+    <dimen name="all_width_none">0dp</dimen>
+    <dimen name="all_width_medium">16dp</dimen>
+    <dimen name="all_height_medium">16dp</dimen>
+    <dimen name="all_height_big">20dp</dimen>
+
+    <dimen name="all_margin_xsmall">8dp</dimen>
+    <dimen name="all_margin_small">12dp</dimen>
+    <dimen name="all_margin_big">20dp</dimen>
+    <dimen name="all_margin_large">52dp</dimen>
+
+
+    <!--    dimensions for item movie layout-->
+    <dimen name="item_margin_vertical">@dimen/all_margin_xsmall</dimen>
     <dimen name="item_layout_height">170dp</dimen>
+
+    <!--    dimensions for activity detail layout-->
+    <dimen name="detail_constraint_margin_top">@dimen/all_margin_big</dimen>
+    <dimen name="detail_thumbnail_width">160dp</dimen>
+    <dimen name="detail_thumbnail_height">240dp</dimen>
+
+    <dimen name="detail_title_margin_start">@dimen/all_margin_small</dimen>
+    <dimen name="detail_title_margin_end">@dimen/all_margin_small</dimen>
+    <dimen name="detail_title_margin_top">@dimen/all_margin_xsmall</dimen>
+    <dimen name="detail_title_margin_left">@dimen/all_margin_small</dimen>
+    <dimen name="detail_title_margin_right">@dimen/all_margin_small</dimen>
+    <dimen name="detail_title_text_size">22sp</dimen>
+
+    <dimen name="detail_dateico_width">@dimen/all_width_medium</dimen>
+    <dimen name="detail_dateico_height">@dimen/all_height_medium</dimen>
+    <dimen name="detail_date_height">@dimen/all_height_big</dimen>
+    <dimen name="detail_date_textsize">12sp</dimen>
+
+    <dimen name="detail_ratingico_layout_width">@dimen/all_width_medium</dimen>
+    <dimen name="detail_ratingico_layout_height">@dimen/all_height_medium</dimen>
+
+    <dimen name="detail_rating_textsize">12sp</dimen>
+
+    <dimen name="detail_plot_margin_start">@dimen/all_margin_large</dimen>
+    <dimen name="detail_plot_margin_end">@dimen/all_margin_large</dimen>
+    <dimen name="detail_plot_margin_left">@dimen/all_margin_large</dimen>
+    <dimen name="detail_plot_margin_right">@dimen/all_margin_large</dimen>
+    <dimen name="detail_plot_margin_top">8dp</dimen>
+    <dimen name="detail_plot_textsize">16sp</dimen>
 </resources>

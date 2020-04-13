@@ -1,14 +1,20 @@
 <resources>
     <string name="app_name">FlixDB</string>
 
-    <string name="item_movie_columnWidth">120</string>
+    <!--    activity labels-->
     <string name="activity_settings_label">Settings</string>
+    <string name="activity_details_label">Movie Details</string>
+
+    <!--    menu options-->
     <string name="action_settings">Settings</string>
 
+    <!--    item movie width-->
+    <string name="item_movie_columnWidth">120</string>
+
+    <!--    preferences-->
     <string name="pref_api_label">API KEY</string>
     <string name="pref_api_key" translatable="false">api_key</string>
     <string name="pref_api_default" translatable="false">Place Your API Key Here</string>
-
     <string name="pref_sort_order_label">Movies Order</string>
     <string name="pref_sort_order_key" translatable="false">sort_order</string>
     <string name="pref_sort_order_label_popular" translatable="false">Popular</string>
