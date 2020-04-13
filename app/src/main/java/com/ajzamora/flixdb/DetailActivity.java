@@ -44,11 +44,11 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        mThumbIv = (ImageView) findViewById(R.id.iv_thumbnail_detail);
-        mTitleTv = (TextView) findViewById(R.id.tv_title_detail);
-        mPlotTv = (TextView) findViewById(R.id.tv_plot_detail);
-        mRatingTv = (TextView) findViewById(R.id.tv_rating_detail);
-        mDateTv = (TextView) findViewById(R.id.tv_date_detail);
+        mThumbIv = findViewById(R.id.iv_thumbnail_detail);
+        mTitleTv = findViewById(R.id.tv_title_detail);
+        mPlotTv = findViewById(R.id.tv_plot_detail);
+        mRatingTv = findViewById(R.id.tv_rating_detail);
+        mDateTv = findViewById(R.id.tv_date_detail);
     }
 
     private void closeOnError() {
@@ -71,7 +71,6 @@ public class DetailActivity extends AppCompatActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
