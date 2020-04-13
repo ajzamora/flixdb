@@ -12,16 +12,14 @@ import com.ajzamora.flixdb.R;
 import com.ajzamora.flixdb.models.Movie;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
-
-    private int mNumOfItems;
     private List<Movie> mMovies;
-    private final String tempImagePath = "https://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
 
-    public MovieAdapter(int numOfItems) {
-        mNumOfItems = numOfItems;
+    public MovieAdapter(List<Movie> movies) {
+        mMovies = movies;
     }
 
     @NonNull
@@ -37,32 +35,38 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        holder.bind(position);
+        Movie currentMovie = mMovies.get(position);
+        holder.bind(currentMovie);
     }
 
     @Override
     public int getItemCount() {
-        return mNumOfItems;
+        return mMovies.size();
     }
 
     public final class MovieViewHolder extends RecyclerView.ViewHolder {
         ImageView mItemMovieIV;
+        Movie mCurrentMovie;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
             mItemMovieIV = (ImageView) itemView.findViewById(R.id.imageview_item_movie);
         }
 
-        void bind(int currentItemMovie) {
+        void bind(Movie currentMovie) {
+            mCurrentMovie = currentMovie;
             Picasso.get()
-                    .load(tempImagePath)
+                    .load(currentMovie.getThumbnail())
                     .into(mItemMovieIV);
         }
     }
 
     public void setData(List<Movie> movies) {
         mMovies = movies;
-        mNumOfItems = mMovies.size();
         notifyDataSetChanged();
+    }
+
+    public void clear() {
+        setData(new ArrayList<Movie>());
     }
 }

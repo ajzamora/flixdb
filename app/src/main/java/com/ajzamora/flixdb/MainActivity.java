@@ -18,7 +18,7 @@ import android.view.MenuItem;
 
 import com.ajzamora.flixdb.adapters.MovieAdapter;
 import com.ajzamora.flixdb.loaders.MovieLoader;
-import com.ajzamora.flixdb.models.FlixPrefences;
+import com.ajzamora.flixdb.models.FlixPreferences;
 import com.ajzamora.flixdb.models.Movie;
 import com.ajzamora.flixdb.utils.LayoutUtils;
 
@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         initUI();
 
-
         LoaderManager loaderManager = getSupportLoaderManager();
         loaderManager.initLoader(MOVIE_LOADER_ID, null, this);
 
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         mMainRV.setLayoutManager(new GridLayoutManager(this, mNoOfColumns));
         mMainRV.setHasFixedSize(true);
 
-        mMovieAdapter = new MovieAdapter(NUM_LIST_ITEMS);
+        mMovieAdapter = new MovieAdapter(new ArrayList<Movie>());
         mMainRV.setAdapter(mMovieAdapter);
     }
 
@@ -89,6 +88,8 @@ public class MainActivity extends AppCompatActivity
 
         if (sharedPreferenceFlag) {
             Log.i(LOG_TAG, "onStart: preferences were updated");
+            getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+
             sharedPreferenceFlag = false;
         }
     }
@@ -104,12 +105,15 @@ public class MainActivity extends AppCompatActivity
     @NonNull
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new MovieLoader(this, FlixPrefences.getPreferredAPI(this));
+        String api = FlixPreferences.getPreferredAPI(this);
+        String sortOrder = FlixPreferences.getPreferredSortOrder(this);
+
+        return new MovieLoader(this, api, sortOrder);
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<List<Movie>> loader, List<Movie> movies) {
-        mMovieAdapter.setData(new ArrayList<Movie>());
+        mMovieAdapter.clear();
         if (movies != null && !movies.isEmpty()) {
             mMovieAdapter.setData(movies);
         }
@@ -117,6 +121,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(@NonNull Loader<List<Movie>> loader) {
-        mMovieAdapter.setData(new ArrayList<Movie>());
+        mMovieAdapter.clear();
     }
 }
