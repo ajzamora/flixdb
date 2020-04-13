@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import com.ajzamora.flixdb.R;
 
-public class FlixPrefences {
+public class FlixPreferences {
 
     public static String getPreferredAPI(Context context) {
         SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context);
@@ -15,14 +15,12 @@ public class FlixPrefences {
         return prefs.getString(keyForLocation, defaultLocation);
     }
 
-    public static boolean isOrderPopular(Context context) {
+    public static String getPreferredSortOrder(Context context) {
         SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context);
         String keyForSortOrder = context.getString(R.string.pref_sort_order_key);
         String defaultSortOrder = context.getString(R.string.pref_sort_order_popular);
-        String preferredOrder = prefs.getString(keyForSortOrder, defaultSortOrder);
-        String sortOrder = "popular";
 
-        return sortOrder.equals(preferredOrder);
+        return prefs.getString(keyForSortOrder, defaultSortOrder);
     }
 
 }
