@@ -4,15 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Movie implements Parcelable {
-
-    public static final String KEY_RESULTS = "results";
-    public static final String KEY_TITLE = "title";
-    public static final String KEY_THUMBNAIL = "poster_path";
-    public static final String KEY_BACKDROP = "backdrop_path";
-    public static final String KEY_PLOT = "overview";
-    public static final String KEY_RATING = "vote_average";
-    public static final String KEY_RELEASE_DATE = "release_date";
-    public static final String IMAGE_URL = "https://image.tmdb.org/t/p/w185";
+    private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w185";
 
     private String mTitle;
     private String mThumbnail;
