@@ -36,8 +36,7 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
     protected void onStartLoading() {
         if (mMovies != null) {
             deliverResult(mMovies);
-        }
-        else if (takeContentChanged() || mMovies == null) {
+        } else if (takeContentChanged() || mMovies == null) {
             forceLoad();
         }
     }

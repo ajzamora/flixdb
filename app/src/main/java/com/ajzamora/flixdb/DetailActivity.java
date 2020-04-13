@@ -1,14 +1,14 @@
 package com.ajzamora.flixdb;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import com.ajzamora.flixdb.models.Movie;
 import com.squareup.picasso.Picasso;
@@ -34,7 +34,7 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
-        if(movie != null) {
+        if (movie != null) {
             populateUI(movie);
         }
         ActionBar actionBar = getSupportActionBar();
@@ -67,12 +67,13 @@ public class DetailActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch(id) {
+        switch (id) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
 
-            default: return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

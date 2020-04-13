@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/detail_constraint_margin_top">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/iv_thumbnail_detail"
             android:layout_width="@dimen/detail_thumbnail_width"
             android:layout_height="@dimen/detail_thumbnail_height"
@@ -33,8 +33,7 @@
             app:layout_constraintBottom_toTopOf="@id/iv_dateico_detail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_thumbnail_detail"
-            />
+            app:layout_constraintTop_toBottomOf="@id/iv_thumbnail_detail" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_dateico_detail"
@@ -54,10 +53,9 @@
             android:textSize="@dimen/detail_date_textsize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_dateico_detail"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_detail"
-            />
+            app:layout_constraintTop_toBottomOf="@id/tv_title_detail" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/iv_ratingico_detail"
             android:layout_width="@dimen/detail_ratingico_layout_width"
             android:layout_height="@dimen/detail_ratingico_layout_height"
@@ -92,8 +90,7 @@
             android:textSize="@dimen/detail_plot_textsize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_rating_detail"
-            />
+            app:layout_constraintTop_toBottomOf="@id/tv_rating_detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

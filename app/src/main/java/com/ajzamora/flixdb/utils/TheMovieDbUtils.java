@@ -12,8 +12,9 @@ import java.util.ArrayList;
 public final class TheMovieDbUtils {
 
     public static ArrayList<Movie> getSimpleMovieStringsFromJson(String movieJSON) throws JSONException {
+        final int LOAD_TIME_IN_MILLISECONDS = 2000;
         try {
-            Thread.sleep(1000);
+            Thread.sleep(LOAD_TIME_IN_MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

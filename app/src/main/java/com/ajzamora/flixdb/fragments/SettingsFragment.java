@@ -60,7 +60,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onStop() {
         super.onStop();
-        /* Unregister the preference change listener */
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -68,7 +67,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onStart() {
         super.onStart();
-        /* Register the preference change listener */
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
     }

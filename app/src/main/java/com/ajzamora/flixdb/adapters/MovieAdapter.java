@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.ajzamora.flixdb.R;
 import com.ajzamora.flixdb.models.Movie;
 import com.squareup.picasso.Picasso;

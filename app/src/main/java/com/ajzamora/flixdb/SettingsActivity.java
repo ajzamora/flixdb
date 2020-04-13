@@ -24,11 +24,12 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        switch(id) {
+        switch (id) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 break;
-            default: return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
         return true;
     }

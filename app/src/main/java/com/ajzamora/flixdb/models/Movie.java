@@ -59,6 +59,7 @@ public class Movie implements Parcelable {
         public Movie build() {
             return new Movie(this);
         }
+
         @Override
         public String toString() {
             return "Builder{" +
@@ -71,9 +72,13 @@ public class Movie implements Parcelable {
         }
     }
 
-    public String getTitle() { return mTitle; }
+    public String getTitle() {
+        return mTitle;
+    }
 
-    public String getThumbnail() { return IMAGE_URL.concat(mThumbnail); }
+    public String getThumbnail() {
+        return IMAGE_URL.concat(mThumbnail);
+    }
 
     public String getPlot() {
         return mPlot;
