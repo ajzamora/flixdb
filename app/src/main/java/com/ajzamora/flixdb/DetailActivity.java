@@ -1,9 +1,12 @@
 package com.ajzamora.flixdb;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +37,10 @@ public class DetailActivity extends AppCompatActivity {
         if(movie != null) {
             populateUI(movie);
         }
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void initUI() {
@@ -56,5 +63,16 @@ public class DetailActivity extends AppCompatActivity {
         mPlotTv.setText(movie.getPlot());
         mRatingTv.setText(movie.getRating());
         mDateTv.setText(movie.getReleaseDate());
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch(id) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
+            default: return super.onOptionsItemSelected(item);
+        }
     }
 }
