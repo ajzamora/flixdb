@@ -9,12 +9,19 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.ajzamora.flixdb.adapters.MovieAdapter;
 import com.ajzamora.flixdb.loaders.MovieLoader;
@@ -32,10 +39,13 @@ public class MainActivity extends AppCompatActivity
 
     public final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_LOADER_ID = 1;
-    private static final int NUM_LIST_ITEMS = 100;
 
     private MovieAdapter mMovieAdapter;
     private RecyclerView mMainRV;
+    private TextView mEmptyStateTV;
+    private ImageView mEmptyIconIV;
+    private TextView mEmptyIconLabelTV;
+    private ProgressBar mIndicatorPb;
 
     private static boolean sharedPreferenceFlag = false;
 
@@ -45,20 +55,47 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         initUI();
 
-        LoaderManager loaderManager = getSupportLoaderManager();
-        loaderManager.initLoader(MOVIE_LOADER_ID, null, this);
+        if (isOnline()) {
+            LoaderManager loaderManager = getSupportLoaderManager();
+            loaderManager.initLoader(MOVIE_LOADER_ID, null, this);
+        } else {
+            setEmptyState(R.string.main_emptystate_no_internet, R.drawable.ic_panda, R.string.main_emptystate_icon_panda);
+        }
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
 
     public void initUI() {
-        mMainRV = (RecyclerView) findViewById(R.id.recyclerview_main);
+        mIndicatorPb = (ProgressBar) findViewById(R.id.pb_indicator_main);
+        mEmptyStateTV = (TextView) findViewById(R.id.tv_empty_main);
+        mEmptyIconIV = (ImageView) findViewById(R.id.iv_empty_icon_main);
+        mEmptyIconLabelTV = (TextView) findViewById(R.id.tv_empty_icon_label_main);
+        mMainRV = (RecyclerView) findViewById(R.id.rv_movie_main);
         int mNoOfColumns = LayoutUtils.calculateNoOfColumns(getApplicationContext(), Integer.valueOf(getString(R.string.item_movie_columnWidth)));
         mMainRV.setLayoutManager(new GridLayoutManager(this, mNoOfColumns));
         mMainRV.setHasFixedSize(true);
 
         mMovieAdapter = new MovieAdapter(new ArrayList<Movie>(), this);
         mMainRV.setAdapter(mMovieAdapter);
+    }
+
+    private void setEmptyState(int resEmptyStateText, int resEmptyIcoImage, int resEmptyStateIcoLabel) {
+        mIndicatorPb.setVisibility(View.GONE);
+
+        mEmptyStateTV.setVisibility(View.VISIBLE);
+        mEmptyIconIV.setVisibility(View.VISIBLE);
+        mEmptyIconLabelTV.setVisibility(View.VISIBLE);
+        mEmptyStateTV.setText(getString(resEmptyStateText));
+        mEmptyIconIV.setImageResource(resEmptyIcoImage);
+        mEmptyIconLabelTV.setText(getString(resEmptyStateIcoLabel));
+    }
+
+    private void hideEmptyState() {
+        mEmptyStateTV.setVisibility(View.GONE);
+        mEmptyIconIV.setVisibility(View.GONE);
+        mEmptyIconLabelTV.setVisibility(View.GONE);
+
+        mIndicatorPb.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -89,8 +126,10 @@ public class MainActivity extends AppCompatActivity
 
         if (sharedPreferenceFlag) {
             Log.i(LOG_TAG, "onStart: preferences were updated");
-            getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+            hideEmptyState();
 
+            mMovieAdapter.clear();
+            getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
             sharedPreferenceFlag = false;
         }
     }
@@ -98,7 +137,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -114,9 +152,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(@NonNull Loader<List<Movie>> loader, List<Movie> movies) {
+        mIndicatorPb.setVisibility(View.GONE);
         mMovieAdapter.clear();
         if (movies != null && !movies.isEmpty()) {
             mMovieAdapter.setData(movies);
+        } else {
+            mEmptyStateTV.setText(getString(R.string.main_emptystate_no_movies));
+            setEmptyState(R.string.main_emptystate_no_movies, R.drawable.ic_sad, R.string.main_emptystate_icon_sad);
         }
     }
 
@@ -134,5 +176,12 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_MOVIE, currentMovie);
         startActivity(intent);
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 }

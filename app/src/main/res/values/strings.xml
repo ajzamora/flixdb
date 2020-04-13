@@ -21,4 +21,11 @@
     <string name="pref_sort_order_popular">popular</string>
     <string name="pref_sort_order_label_top_rated">Top Rated</string>
     <string name="pref_sort_order_top_rated" translatable="false">top_rated</string>
+
+    <!--    empty state values-->
+    <string name="main_emptystate_no_internet">"No Internet Connection"</string>
+    <string name="main_emptystate_invalid_api">"Invalid API"</string>
+    <string name="main_emptystate_no_movies">"No Movies Found"</string>
+    <string name="main_emptystate_icon_panda">"Here's a panda for you!"</string>
+    <string name="main_emptystate_icon_sad">":("</string>
 </resources>

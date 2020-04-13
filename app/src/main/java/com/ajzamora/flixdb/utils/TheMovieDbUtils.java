@@ -12,6 +12,12 @@ import java.util.ArrayList;
 public final class TheMovieDbUtils {
 
     public static ArrayList<Movie> getSimpleMovieStringsFromJson(String movieJSON) throws JSONException {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         JSONObject forecastJson = new JSONObject(movieJSON);
 
         final String TMDB_RESULTS = "results";
@@ -20,7 +26,6 @@ public final class TheMovieDbUtils {
         final String TMDB_PLOT = "overview";
         final String TMDB_RATING = "vote_average";
         final String TMDB_RELEASE_DATE = "release_date";
-
         final String TMDB_STATUS_CODE = "status_code";
 
         if (forecastJson.has(TMDB_STATUS_CODE)) {
