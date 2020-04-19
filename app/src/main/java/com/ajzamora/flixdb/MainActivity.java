@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-        if (sharedPreferenceFlag) {
+        if (sharedPreferenceFlag && isOnline()) {
             Log.i(LOG_TAG, "onStart: preferences were updated");
             hideEmptyState();
 
