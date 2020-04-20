@@ -6,91 +6,125 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/detail_constraint_margin_top">
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fl_backdrop_detail"
+            android:layout_width="@dimen/all_width_none"
+            android:layout_height="@dimen/all_height_none"
+            app:layout_constraintDimensionRatio="H,2:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_backdrop_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/play_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_media_play"
+            app:layout_constraintBottom_toBottomOf="@id/fl_backdrop_detail"
+            app:layout_constraintEnd_toEndOf="@id/fl_backdrop_detail"
+            app:layout_constraintStart_toStartOf="@id/fl_backdrop_detail"
+            app:layout_constraintTop_toTopOf="@id/fl_backdrop_detail" />
 
         <ImageView
             android:id="@+id/iv_thumbnail_detail"
+            android:layout_marginStart="@dimen/detail_thumbnail_margin_start"
+            android:layout_marginLeft="@dimen/detail_thumbnail_margin_left"
+            android:layout_marginTop="@dimen/detail_thumbnail_margin_top"
             android:layout_width="@dimen/detail_thumbnail_width"
             android:layout_height="@dimen/detail_thumbnail_height"
-            app:layout_constraintBottom_toTopOf="@id/tv_title_detail"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_title_detail"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/fl_backdrop_detail" />
 
         <TextView
             android:id="@+id/tv_title_detail"
             android:layout_width="@dimen/all_width_none"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/detail_title_margin_start"
-            android:layout_marginLeft="@dimen/detail_title_margin_left"
-            android:layout_marginTop="@dimen/detail_title_margin_top"
-            android:gravity="center_horizontal"
+            android:paddingStart="@dimen/detail_title_padding_start"
+            android:paddingLeft="@dimen/detail_title_padding_left"
+            android:paddingRight="@dimen/detail_title_padding_right"
+            android:paddingTop="@dimen/detail_title_padding_top"
             android:maxLines="@integer/detail_title_maxlines"
-            android:text="center"
             android:textColor="@android:color/white"
             android:textSize="@dimen/detail_title_text_size"
             app:layout_constraintBottom_toTopOf="@id/iv_dateico_detail"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_thumbnail_detail" />
+            app:layout_constraintStart_toEndOf="@id/iv_thumbnail_detail"
+            app:layout_constraintTop_toBottomOf="@id/fl_backdrop_detail"
+            android:paddingEnd="@dimen/detail_title_padding_right" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
+            android:layout_marginStart="@dimen/detail_title_padding_start"
+            android:layout_marginLeft="@dimen/detail_title_padding_left"
             android:id="@+id/iv_dateico_detail"
             android:layout_width="@dimen/detail_dateico_width"
             android:layout_height="@dimen/detail_dateico_height"
             android:src="@android:drawable/ic_menu_my_calendar"
-            app:layout_constraintEnd_toStartOf="@id/tv_date_detail"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_thumbnail_detail"
             app:layout_constraintTop_toBottomOf="@id/tv_title_detail" />
 
         <TextView
             android:id="@+id/tv_date_detail"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/all_width_none"
             android:layout_height="@dimen/detail_date_height"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/detail_date_textsize"
+            android:textSize="@dimen/detail_date_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_dateico_detail"
             app:layout_constraintTop_toBottomOf="@id/tv_title_detail" />
 
         <ImageView
             android:id="@+id/iv_ratingico_detail"
-            android:layout_width="@dimen/detail_ratingico_layout_width"
-            android:layout_height="@dimen/detail_ratingico_layout_height"
+            android:layout_marginStart="@dimen/detail_title_padding_start"
+            android:layout_marginLeft="@dimen/detail_title_padding_left"
+            android:layout_width="@dimen/detail_ratingico_width"
+            android:layout_height="@dimen/detail_ratingico_height"
             android:src="@android:drawable/btn_star"
             app:layout_constraintEnd_toStartOf="@id/tv_rating_detail"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_thumbnail_detail"
             app:layout_constraintTop_toBottomOf="@id/tv_date_detail" />
 
         <TextView
             android:id="@+id/tv_rating_detail"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/all_width_none"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/detail_rating_textsize"
+            android:textSize="@dimen/detail_rating_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_ratingico_detail"
             app:layout_constraintTop_toBottomOf="@id/tv_date_detail" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_thumbnail_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="iv_thumbnail_detail, tv_rating_detail"
+            />
 
         <TextView
             android:id="@+id/tv_plot_detail"
             android:layout_width="@dimen/all_width_none"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/detail_plot_margin_start"
-            android:layout_marginLeft="@dimen/detail_plot_margin_left"
-            android:layout_marginTop="@dimen/detail_plot_margin_top"
-            android:layout_marginEnd="@dimen/detail_plot_margin_end"
-            android:layout_marginRight="@dimen/detail_plot_margin_right"
-            android:gravity="center_horizontal"
-            android:textAlignment="center"
+            android:layout_marginStart="@dimen/detail_plot_padding_start"
+            android:layout_marginLeft="@dimen/detail_plot_padding_left"
+            android:layout_marginTop="@dimen/detail_plot_padding_top"
+            android:layout_marginEnd="@dimen/detail_plot_padding_end"
+            android:layout_marginRight="@dimen/detail_plot_padding_right"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/detail_plot_textsize"
+            android:textSize="@dimen/detail_plot_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_rating_detail" />
+            app:layout_constraintTop_toBottomOf="@id/barrier_thumbnail_detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

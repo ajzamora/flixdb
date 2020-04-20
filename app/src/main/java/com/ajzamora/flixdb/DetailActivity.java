@@ -17,6 +17,7 @@ public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_MOVIE = "extra_movie";
 
     private ImageView mThumbIv;
+    private ImageView mBackdropIv;
     private TextView mTitleTv;
     private TextView mPlotTv;
     private TextView mRatingTv;
@@ -45,6 +46,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void initUI() {
         mThumbIv = findViewById(R.id.iv_thumbnail_detail);
+        mBackdropIv = findViewById(R.id.iv_backdrop_detail);
         mTitleTv = findViewById(R.id.tv_title_detail);
         mPlotTv = findViewById(R.id.tv_plot_detail);
         mRatingTv = findViewById(R.id.tv_rating_detail);
@@ -56,13 +58,19 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateUI(Movie movie) {
+        final String rateLabel = "Rating: ";
+        final String dateLabel = "Release Date: ";
+
         Picasso.get()
                 .load(movie.getThumbnail())
                 .into(mThumbIv);
+        Picasso.get()
+                .load(movie.getBackdrop())
+                .into(mBackdropIv);
         mTitleTv.setText(movie.getTitle());
         mPlotTv.setText(movie.getPlot());
-        mRatingTv.setText(movie.getRating());
-        mDateTv.setText(movie.getReleaseDate());
+        mRatingTv.setText(rateLabel.concat(movie.getRating()));
+        mDateTv.setText(dateLabel.concat(movie.getReleaseDate()));
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -23,6 +23,7 @@ public final class TheMovieDbUtils {
         final String TMDB_RESULTS = "results";
         final String TMDB_TITLE = "title";
         final String TMDB_THUMBNAIL = "poster_path";
+        final String TMDB_BACKDROP = "backdrop_path";
         final String TMDB_PLOT = "overview";
         final String TMDB_RATING = "vote_average";
         final String TMDB_RELEASE_DATE = "release_date";
@@ -52,12 +53,14 @@ public final class TheMovieDbUtils {
             JSONObject currentMovie = resultsArray.getJSONObject(i);
             String title = currentMovie.getString(TMDB_TITLE);
             String thumbnail = currentMovie.getString(TMDB_THUMBNAIL);
+            String backdrop = currentMovie.getString(TMDB_BACKDROP);
             String plot = currentMovie.getString(TMDB_PLOT);
             String rating = currentMovie.getString(TMDB_RATING);
             String releaseDate = currentMovie.getString(TMDB_RELEASE_DATE);
 
             movieBuilder.title(title)
                     .thumbnail(thumbnail)
+                    .backdrop(backdrop)
                     .plot(plot)
                     .rating(rating)
                     .releaseDate(releaseDate);
