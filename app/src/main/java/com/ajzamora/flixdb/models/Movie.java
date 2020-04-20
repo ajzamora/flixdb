@@ -5,9 +5,11 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
     private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w185";
+    private static final String IMAGE_BACKDROP_URL = "https://image.tmdb.org/t/p/w500";
 
     private String mTitle;
     private String mThumbnail;
+    private String mBackdrop;
     private String mPlot;
     private String mRating;
     private String mReleaseDate;
@@ -15,6 +17,7 @@ public class Movie implements Parcelable {
     private Movie(Builder b) {
         mTitle = b.title;
         mThumbnail = b.thumbnail;
+        mBackdrop = b.backdrop;
         mPlot = b.plot;
         mRating = b.rating;
         mReleaseDate = b.releaseDate;
@@ -23,6 +26,7 @@ public class Movie implements Parcelable {
     public static final class Builder {
         private String title;
         private String thumbnail;
+        private String backdrop;
         private String plot;
         private String rating;
         private String releaseDate;
@@ -38,6 +42,11 @@ public class Movie implements Parcelable {
 
         public Builder thumbnail(String thumbnail) {
             this.thumbnail = thumbnail;
+            return this;
+        }
+
+        public Builder backdrop(String backdrop) {
+            this.backdrop = backdrop;
             return this;
         }
 
@@ -65,6 +74,7 @@ public class Movie implements Parcelable {
             return "Builder{" +
                     "title='" + title + '\'' +
                     ", thumbnail='" + thumbnail + '\'' +
+                    ", backdrop='" + backdrop + '\'' +
                     ", plot='" + plot + '\'' +
                     ", rating='" + rating + '\'' +
                     ", releaseDate='" + releaseDate + '\'' +
@@ -78,6 +88,10 @@ public class Movie implements Parcelable {
 
     public String getThumbnail() {
         return IMAGE_URL.concat(mThumbnail);
+    }
+
+    public String getBackdrop() {
+        return IMAGE_BACKDROP_URL.concat(mBackdrop);
     }
 
     public String getPlot() {
@@ -97,6 +111,7 @@ public class Movie implements Parcelable {
         return "Movie{" +
                 "mTitle='" + mTitle + '\'' +
                 ", mThumbnail='" + mThumbnail + '\'' +
+                ", mBackdrop='" + mBackdrop + '\'' +
                 ", mPlot='" + mPlot + '\'' +
                 ", mRating='" + mRating + '\'' +
                 ", mReleaseDate='" + mReleaseDate + '\'' +
@@ -106,6 +121,7 @@ public class Movie implements Parcelable {
     protected Movie(Parcel in) {
         mTitle = in.readString();
         mThumbnail = in.readString();
+        mBackdrop = in.readString();
         mPlot = in.readString();
         mRating = in.readString();
         mReleaseDate = in.readString();
@@ -132,6 +148,7 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mTitle);
         dest.writeString(mThumbnail);
+        dest.writeString(mBackdrop);
         dest.writeString(mPlot);
         dest.writeString(mRating);
         dest.writeString(mReleaseDate);
