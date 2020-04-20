@@ -1,8 +1,11 @@
 package com.ajzamora.flixdb;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +29,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_detail);
 
         initUI();
@@ -40,6 +44,9 @@ public class DetailActivity extends AppCompatActivity {
         }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setHideOnContentScrollEnabled(true);
+            actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
