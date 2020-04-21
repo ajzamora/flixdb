@@ -28,12 +28,12 @@ public class DetailActivity extends AppCompatActivity {
 
     private TrailerAdapter mTrailerAdapter;
     private RecyclerView mDetailRV;
-    private ImageView mThumbIv;
-    private ImageView mBackdropIv;
-    private TextView mTitleTv;
-    private TextView mPlotTv;
-    private TextView mRatingTv;
-    private TextView mDateTv;
+    private ImageView mThumbIV;
+    private ImageView mBackdropIV;
+    private TextView mTitleTV;
+    private TextView mPlotTV;
+    private TextView mRatingTV;
+    private TextView mDateTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +67,12 @@ public class DetailActivity extends AppCompatActivity {
         mTrailerAdapter = new TrailerAdapter(generateSampleData());
         mDetailRV.setAdapter(mTrailerAdapter);
 
-        mThumbIv = findViewById(R.id.iv_thumbnail_detail);
-        mBackdropIv = findViewById(R.id.iv_backdrop_detail);
-        mTitleTv = findViewById(R.id.tv_title_detail);
-        mPlotTv = findViewById(R.id.tv_plot_detail);
-        mRatingTv = findViewById(R.id.tv_rating_detail);
-        mDateTv = findViewById(R.id.tv_date_detail);
+        mThumbIV = findViewById(R.id.iv_thumbnail_detail);
+        mBackdropIV = findViewById(R.id.iv_backdrop_detail);
+        mTitleTV = findViewById(R.id.tv_title_detail);
+        mPlotTV = findViewById(R.id.tv_plot_detail);
+        mRatingTV = findViewById(R.id.tv_rating_detail);
+        mDateTV = findViewById(R.id.tv_date_detail);
     }
 
     private List<Trailer> generateSampleData() {
@@ -102,14 +102,14 @@ public class DetailActivity extends AppCompatActivity {
 
         Picasso.get()
                 .load(movie.getThumbnail())
-                .into(mThumbIv);
+                .into(mThumbIV);
         Picasso.get()
                 .load(movie.getBackdrop())
-                .into(mBackdropIv);
-        mTitleTv.setText(movie.getTitle());
-        mPlotTv.setText(movie.getPlot());
-        mRatingTv.setText(rateLabel.concat(movie.getRating()));
-        mDateTv.setText(dateLabel.concat(movie.getReleaseDate()));
+                .into(mBackdropIV);
+        mTitleTV.setText(movie.getTitle());
+        mPlotTV.setText(movie.getPlot());
+        mRatingTV.setText(rateLabel.concat(movie.getRating()));
+        mDateTV.setText(dateLabel.concat(movie.getReleaseDate()));
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

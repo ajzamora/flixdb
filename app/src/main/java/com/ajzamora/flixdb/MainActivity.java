@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     private TextView mEmptyStateTV;
     private ImageView mEmptyIconIV;
     private TextView mEmptyIconLabelTV;
-    private ProgressBar mIndicatorPb;
+    private ProgressBar mIndicatorPB;
 
     private static boolean sharedPreferenceFlag = false;
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void initUI() {
-        mIndicatorPb = findViewById(R.id.pb_indicator_main);
+        mIndicatorPB = findViewById(R.id.pb_indicator_main);
         mEmptyStateTV = findViewById(R.id.tv_empty_main);
         mEmptyIconIV = findViewById(R.id.iv_empty_icon_main);
         mEmptyIconLabelTV = findViewById(R.id.tv_empty_icon_label_main);
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setEmptyState(int resEmptyStateText, int resEmptyIcoImage, int resEmptyStateIcoLabel) {
-        mIndicatorPb.setVisibility(View.GONE);
+        mIndicatorPB.setVisibility(View.GONE);
 
         mEmptyStateTV.setVisibility(View.VISIBLE);
         mEmptyIconIV.setVisibility(View.VISIBLE);
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity
         mEmptyIconIV.setVisibility(View.GONE);
         mEmptyIconLabelTV.setVisibility(View.GONE);
 
-        mIndicatorPb.setVisibility(View.VISIBLE);
+        mIndicatorPB.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(@NonNull Loader<List<Movie>> loader, List<Movie> movies) {
-        mIndicatorPb.setVisibility(View.GONE);
+        mIndicatorPB.setVisibility(View.GONE);
         mMovieAdapter.clear();
         if (movies != null && !movies.isEmpty()) {
             mMovieAdapter.setData(movies);
