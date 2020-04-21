@@ -24,15 +24,15 @@
                 android:scaleType="centerCrop" />
         </FrameLayout>
 
-        <ImageView
-            android:id="@+id/play_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_media_play"
-            app:layout_constraintBottom_toBottomOf="@id/fl_backdrop_detail"
-            app:layout_constraintEnd_toEndOf="@id/fl_backdrop_detail"
-            app:layout_constraintStart_toStartOf="@id/fl_backdrop_detail"
-            app:layout_constraintTop_toTopOf="@id/fl_backdrop_detail" />
+<!--        <ImageView-->
+<!--            android:id="@+id/play_icon"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@android:drawable/ic_media_play"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/fl_backdrop_detail"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/fl_backdrop_detail"-->
+<!--            app:layout_constraintStart_toStartOf="@id/fl_backdrop_detail"-->
+<!--            app:layout_constraintTop_toTopOf="@id/fl_backdrop_detail" />-->
 
         <ImageView
             android:id="@+id/iv_thumbnail_detail"
@@ -115,16 +115,30 @@
             android:id="@+id/tv_plot_detail"
             android:layout_width="@dimen/all_width_none"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/detail_plot_padding_start"
-            android:layout_marginLeft="@dimen/detail_plot_padding_left"
-            android:layout_marginTop="@dimen/detail_plot_padding_top"
-            android:layout_marginEnd="@dimen/detail_plot_padding_end"
-            android:layout_marginRight="@dimen/detail_plot_padding_right"
+            android:paddingStart="@dimen/detail_plot_padding_start"
+            android:paddingLeft="@dimen/detail_plot_padding_left"
+            android:paddingTop="@dimen/detail_plot_padding_top"
+            android:paddingEnd="@dimen/detail_plot_padding_end"
+            android:paddingRight="@dimen/detail_plot_padding_right"
+            android:paddingBottom="@dimen/detail_plot_padding_bottom"
             android:textColor="@android:color/white"
             android:textSize="@dimen/detail_plot_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier_thumbnail_detail" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_trailer_detail"
+            android:paddingLeft="@dimen/detail_trailer_padding_left"
+            android:paddingRight="@dimen/detail_trailer_padding_right"
+            android:paddingStart="@dimen/detail_trailer_padding_start"
+            android:paddingEnd="@dimen/detail_trailer_padding_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_plot_detail"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

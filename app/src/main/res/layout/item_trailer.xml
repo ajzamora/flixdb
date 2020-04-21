@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/item_margin_horizontal"
+    android:visibility="visible"
+    tools:visibility="visible">
+
+    <ImageView
+        android:id="@+id/imageview_item_trailer"
+        android:background="@android:color/background_dark"
+        android:layout_width="@dimen/item_trailer_width"
+        android:layout_height="@dimen/item_trailer_height"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true" />
+
+</FrameLayout>
