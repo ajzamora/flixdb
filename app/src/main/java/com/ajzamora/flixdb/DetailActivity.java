@@ -12,13 +12,22 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.ajzamora.flixdb.adapters.TrailerAdapter;
 import com.ajzamora.flixdb.models.Movie;
+import com.ajzamora.flixdb.models.Trailer;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_MOVIE = "extra_movie";
 
+    private TrailerAdapter mTrailerAdapter;
+    private RecyclerView mDetailRV;
     private ImageView mThumbIv;
     private ImageView mBackdropIv;
     private TextView mTitleTv;
@@ -52,12 +61,35 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        mDetailRV = findViewById(R.id.rv_trailer_detail);
+        mDetailRV.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        mDetailRV.setHasFixedSize(true);
+        mTrailerAdapter = new TrailerAdapter(generateSampleData());
+        mDetailRV.setAdapter(mTrailerAdapter);
+
         mThumbIv = findViewById(R.id.iv_thumbnail_detail);
         mBackdropIv = findViewById(R.id.iv_backdrop_detail);
         mTitleTv = findViewById(R.id.tv_title_detail);
         mPlotTv = findViewById(R.id.tv_plot_detail);
         mRatingTv = findViewById(R.id.tv_rating_detail);
         mDateTv = findViewById(R.id.tv_date_detail);
+    }
+
+    private List<Trailer> generateSampleData() {
+        List<Trailer> trailers = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Trailer.Builder trailerBuilder = new Trailer.Builder();
+            String id = String.valueOf(i);
+            String key = String.valueOf(i);
+            String site = "youtube";
+
+            trailerBuilder.id(id)
+                    .key(key)
+                    .site(site);
+            trailers.add(trailerBuilder.build());
+        }
+
+        return trailers;
     }
 
     private void closeOnError() {
