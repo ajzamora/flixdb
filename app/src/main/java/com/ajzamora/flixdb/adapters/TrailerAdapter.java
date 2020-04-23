@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ajzamora.flixdb.R;
 import com.ajzamora.flixdb.models.Trailer;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     public final class TrailerViewHolder extends RecyclerView.ViewHolder {
         ImageView mItemTrailerIV;
         Trailer mCurrentTrailer;
+
         TrailerViewHolder(View itemView) {
             super(itemView);
             mItemTrailerIV = itemView.findViewById(R.id.imageview_item_trailer);
@@ -54,6 +56,14 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
         void bind(Trailer currentTrailer) {
             mCurrentTrailer = currentTrailer;
+
+            String imgPath = "https://img.youtube.com/vi/"
+                    .concat(currentTrailer.getKey())
+                    .concat("/mqdefault.jpg");
+            Picasso.get()
+                    .load(imgPath)
+                    .placeholder(android.R.color.background_dark)
+                    .into(mItemTrailerIV);
         }
     }
 
@@ -62,5 +72,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         notifyDataSetChanged();
     }
 
-    public void clear() { setData(new ArrayList<Trailer>()); }
+    public ArrayList<Trailer> getData() {
+        return (ArrayList<Trailer>) mTrailers;
+    }
+
+    public void clear() {
+        setData(new ArrayList<Trailer>());
+    }
 }
