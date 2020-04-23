@@ -27,6 +27,7 @@ import com.ajzamora.flixdb.adapters.MovieAdapter;
 import com.ajzamora.flixdb.loaders.MovieLoader;
 import com.ajzamora.flixdb.models.FlixPreferences;
 import com.ajzamora.flixdb.models.Movie;
+import com.ajzamora.flixdb.models.Trailer;
 import com.ajzamora.flixdb.utils.LayoutUtils;
 import com.ajzamora.flixdb.utils.NetworkUtils;
 
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity
 
     public final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_LOADER_ID = 1;
+    public static final String EXTRA_MOVIE_POS = "extra_movie_pos";
+    public static final int EXTRA_MOVIE_POS_DEFAULT = -1;
 
     private MovieAdapter mMovieAdapter;
     private RecyclerView mMainRV;
@@ -173,14 +176,26 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListItemClick(Movie clickedItemIndex) {
+    public void onListItemClick(int clickedItemIndex) {
         launchDetailActivity(clickedItemIndex);
     }
 
-    private void launchDetailActivity(Movie currentMovie) {
+    private void launchDetailActivity(int moviePosition) {
+        Movie currentMovie = mMovieAdapter.getMovieAt(moviePosition);
         Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(MainActivity.EXTRA_MOVIE_POS, moviePosition);
         intent.putExtra(DetailActivity.EXTRA_MOVIE, currentMovie);
-        startActivity(intent);
+        startActivityForResult(intent, DetailActivity.REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DetailActivity.REQUEST_CODE && resultCode == RESULT_OK) {
+            int moviePosition = data.getIntExtra(MainActivity.EXTRA_MOVIE_POS, MainActivity.EXTRA_MOVIE_POS_DEFAULT);
+            List<Trailer> trailers = data.getParcelableArrayListExtra(DetailActivity.EXTRA_TRAILERS);
+            mMovieAdapter.setTrailerListAt(moviePosition, trailers);
+        }
     }
 
     private boolean isOnline() {
