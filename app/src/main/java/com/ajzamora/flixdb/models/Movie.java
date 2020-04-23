@@ -3,36 +3,49 @@ package com.ajzamora.flixdb.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class Movie implements Parcelable {
     private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w185";
     private static final String IMAGE_BACKDROP_URL = "https://image.tmdb.org/t/p/w500";
 
+    private String mId;
     private String mTitle;
     private String mThumbnail;
     private String mBackdrop;
     private String mPlot;
     private String mRating;
     private String mReleaseDate;
+    private List<Trailer> mTrailers;
 
     private Movie(Builder b) {
+        mId = b.id;
         mTitle = b.title;
         mThumbnail = b.thumbnail;
         mBackdrop = b.backdrop;
         mPlot = b.plot;
         mRating = b.rating;
         mReleaseDate = b.releaseDate;
+        mTrailers = b.trailers;
     }
 
     public static final class Builder {
+        private String id;
         private String title;
         private String thumbnail;
         private String backdrop;
         private String plot;
         private String rating;
         private String releaseDate;
+        private List<Trailer> trailers;
 
         public Builder() {
 
+        }
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
         }
 
         public Builder title(String title) {
@@ -65,6 +78,11 @@ public class Movie implements Parcelable {
             return this;
         }
 
+        public Builder trailers(List<Trailer> trailers) {
+            this.trailers = trailers;
+            return this;
+        }
+
         public Movie build() {
             return new Movie(this);
         }
@@ -72,6 +90,7 @@ public class Movie implements Parcelable {
         @Override
         public String toString() {
             return "Builder{" +
+                    "id='" + id + '\'' +
                     "title='" + title + '\'' +
                     ", thumbnail='" + thumbnail + '\'' +
                     ", backdrop='" + backdrop + '\'' +
@@ -80,6 +99,10 @@ public class Movie implements Parcelable {
                     ", releaseDate='" + releaseDate + '\'' +
                     '}';
         }
+    }
+
+    public String getId() {
+        return mId;
     }
 
     public String getTitle() {
@@ -106,9 +129,16 @@ public class Movie implements Parcelable {
         return mReleaseDate;
     }
 
+    public void setTrailers(List<Trailer> trailers) { mTrailers = trailers; }
+
+    public List<Trailer> getTrailers() {
+        return mTrailers;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
+                "mId='" + mId + '\'' +
                 "mTitle='" + mTitle + '\'' +
                 ", mThumbnail='" + mThumbnail + '\'' +
                 ", mBackdrop='" + mBackdrop + '\'' +
@@ -119,12 +149,14 @@ public class Movie implements Parcelable {
     }
 
     protected Movie(Parcel in) {
+        mId = in.readString();
         mTitle = in.readString();
         mThumbnail = in.readString();
         mBackdrop = in.readString();
         mPlot = in.readString();
         mRating = in.readString();
         mReleaseDate = in.readString();
+        mTrailers = in.createTypedArrayList(Trailer.CREATOR);
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -146,11 +178,13 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mId);
         dest.writeString(mTitle);
         dest.writeString(mThumbnail);
         dest.writeString(mBackdrop);
         dest.writeString(mPlot);
         dest.writeString(mRating);
         dest.writeString(mReleaseDate);
+        dest.writeTypedList(mTrailers);
     }
 }
