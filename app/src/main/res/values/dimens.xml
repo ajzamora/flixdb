@@ -32,8 +32,8 @@
     <dimen name="item_margin_horizontal">@dimen/all_margin_xsmall</dimen>
     <dimen name="item_layout_height">170dp</dimen>
 
-    <dimen name="item_trailer_width">120dp</dimen>
-    <dimen name="item_trailer_height">90dp</dimen>
+    <dimen name="item_trailer_width">320dp</dimen>
+    <dimen name="item_trailer_height">180dp</dimen>
 
     <!--    dimensions for activity detail layout-->
     <dimen name="detail_thumbnail_margin_start">@dimen/all_margin_medium</dimen>
