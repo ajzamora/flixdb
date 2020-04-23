@@ -20,6 +20,25 @@ public final class NetworkUtils {
 
     final static String API_PARAM = "api_key";
 
+    // TODO: Refactor
+    public static URL buildTrailerUrl(String api, String id) {
+        Uri builtUri = Uri.parse(TMDB_MOVIE_URL).buildUpon()
+                .appendPath(id)
+                .appendPath("videos")
+                .appendQueryParameter(API_PARAM, api)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException exception) {
+            Log.e(LOG_TAG, "Error with creating URL", exception);
+        }
+
+        Log.v(LOG_TAG, "Built URI " + url);
+        return url;
+    }
+
     public static URL buildUrl(String api, String sortOrder) {
         Uri builtUri = Uri.parse(TMDB_MOVIE_URL).buildUpon()
                 .appendPath(sortOrder)
