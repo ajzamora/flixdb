@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ajzamora.flixdb.R;
 import com.ajzamora.flixdb.models.Movie;
+import com.ajzamora.flixdb.models.Trailer;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public interface RecyclerItemClickListener {
-        void onListItemClick(Movie clickedItemIndex);
+        void onListItemClick(int clickedItemIndex);
     }
 
     @NonNull
@@ -42,8 +44,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        Movie currentMovie = mMovies.get(position);
-        holder.bind(currentMovie);
+        holder.bind(position);
     }
 
     @Override
@@ -54,30 +55,48 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public final class MovieViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         ImageView mItemMovieIV;
-        Movie mCurrentMovie;
+        // TODO: delete after testing
+        TextView mItemMovieTrailerCountTV;
 
         MovieViewHolder(View itemView) {
             super(itemView);
             mItemMovieIV = itemView.findViewById(R.id.imageview_item_movie);
+            mItemMovieTrailerCountTV = itemView.findViewById(R.id.textview_item_trailer_count);
             itemView.setOnClickListener(this);
         }
 
-        void bind(Movie currentMovie) {
-            mCurrentMovie = currentMovie;
+        void bind(int clickedItemIndex) {
+            Movie currentMovie = getMovieAt(clickedItemIndex);
             Picasso.get()
                     .load(currentMovie.getThumbnail())
                     .into(mItemMovieIV);
+            int trailerCount = 0;
+            if (!(currentMovie.getTrailers() == null || currentMovie.getTrailers().isEmpty())) {
+                trailerCount = currentMovie.getTrailers().size();
+            }
+            mItemMovieTrailerCountTV.setText(String.valueOf(trailerCount));
         }
 
         @Override
         public void onClick(View v) {
-            mOnClickListener.onListItemClick(mCurrentMovie);
+            mOnClickListener.onListItemClick(getAdapterPosition());
         }
+    }
+
+    public void setTrailerListAt(int position, List<Trailer> trailers) {
+        Movie currentMovie = mMovies.get(position);
+        currentMovie.setTrailers(trailers);
+        mMovies.set(position, currentMovie);
+        notifyItemChanged(position);
     }
 
     public void setData(List<Movie> movies) {
         mMovies = movies;
         notifyDataSetChanged();
+    }
+
+    public Movie getMovieAt(int position) {
+        return mMovies.get(position);
     }
 
     public void clear() {
