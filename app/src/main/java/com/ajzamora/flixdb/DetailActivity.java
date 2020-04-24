@@ -112,9 +112,6 @@ public class DetailActivity extends AppCompatActivity
     }
 
     private void populateUI(Movie movie) {
-        final String rateLabel = "Rating: ";
-        final String dateLabel = "Release Date: ";
-
         Picasso.get()
                 .load(movie.getThumbnail())
                 .into(mThumbIV);
@@ -123,8 +120,8 @@ public class DetailActivity extends AppCompatActivity
                 .into(mBackdropIV);
         mTitleTV.setText(movie.getTitle());
         mPlotTV.setText(movie.getPlot());
-        mRatingTV.setText(rateLabel.concat(movie.getRating()));
-        mDateTV.setText(dateLabel.concat(movie.getReleaseDate()));
+        mRatingTV.setText(getString(R.string.detail_rate_label, movie.getRating()));
+        mDateTV.setText(getString(R.string.detail_date_label, movie.getReleaseDate()));
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

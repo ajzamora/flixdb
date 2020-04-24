@@ -12,7 +12,6 @@
         android:background="@android:color/background_dark"
         android:layout_width="@dimen/item_trailer_width"
         android:layout_height="@dimen/item_trailer_height"
-        android:layout_gravity="center_horizontal"
         android:adjustViewBounds="true" />
 
 </FrameLayout>

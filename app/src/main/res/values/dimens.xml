@@ -69,8 +69,15 @@
     <dimen name="detail_plot_padding_bottom">@dimen/all_padding_big</dimen>
     <dimen name="detail_plot_text_size">16sp</dimen>
 
-    <dimen name="detail_trailer_padding_left">@dimen/all_padding_small</dimen>
-    <dimen name="detail_trailer_padding_right">@dimen/all_padding_small</dimen>
-    <dimen name="detail_trailer_padding_start">@dimen/all_padding_small</dimen>
-    <dimen name="detail_trailer_padding_end">@dimen/all_padding_small</dimen>
+    <dimen name="detail_trailer_padding_left">@dimen/all_padding_big</dimen>
+    <dimen name="detail_trailer_padding_right">@dimen/all_padding_big</dimen>
+    <dimen name="detail_trailer_padding_start">@dimen/all_padding_big</dimen>
+    <dimen name="detail_trailer_padding_end">@dimen/all_padding_big</dimen>
+    <dimen name="detail_trailer_padding_top">@dimen/all_padding_small</dimen>
+    <dimen name="detail_trailer_padding_bottom">@dimen/all_padding_small</dimen>
+    <dimen name="detail_trailer_label_padding_left">@dimen/all_padding_big</dimen>
+    <dimen name="detail_trailer_label_padding_right">@dimen/all_padding_big</dimen>
+    <dimen name="detail_trailer_label_padding_start">@dimen/all_padding_big</dimen>
+    <dimen name="detail_trailer_label_padding_end">@dimen/all_padding_big</dimen>
+    <dimen name="detail_trailer_label_text_size">22sp</dimen>
 </resources>
