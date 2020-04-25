@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,6 +54,7 @@ public class DetailActivity extends AppCompatActivity
     private TextView mPlotTV;
     private TextView mRatingTV;
     private TextView mDateTV;
+    private TextView mEmptyTrailerTV;
 
     private String mId;
     private int mMoviePosition;
@@ -92,6 +94,7 @@ public class DetailActivity extends AppCompatActivity
             loaderManager.initLoader(TRAILER_LOADER_ID, null, this);
         } else {
             // no internet connection
+            setEmptyTrailerState(R.string.empty_state_no_internet);
         }
     }
 
@@ -108,6 +111,13 @@ public class DetailActivity extends AppCompatActivity
         mPlotTV = findViewById(R.id.tv_plot_detail);
         mRatingTV = findViewById(R.id.tv_rating_detail);
         mDateTV = findViewById(R.id.tv_date_detail);
+        mEmptyTrailerTV = findViewById(R.id.tv_empty_trailer_detail);
+    }
+
+    private void setEmptyTrailerState(int emptyTrailerState) {
+        mEmptyTrailerTV.setVisibility(View.VISIBLE);
+        String emptyTrailer = "-- ".concat(getString(emptyTrailerState)).concat(" --");
+        mEmptyTrailerTV.setText(emptyTrailer);
     }
 
     private void closeOnError() {
@@ -180,8 +190,10 @@ public class DetailActivity extends AppCompatActivity
         } else {
             if (NetworkUtils.STATUS_CODE == HttpURLConnection.HTTP_UNAUTHORIZED) {
                 // Invalid Api Key
+                setEmptyTrailerState(R.string.empty_state_api_invalid);
             } else {
-                // No Trailer Found
+                // No Trailer
+                setEmptyTrailerState(R.string.empty_state_no_preview);
             }
         }
     }

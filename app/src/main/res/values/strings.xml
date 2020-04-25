@@ -23,12 +23,13 @@
     <string name="pref_sort_order_top_rated" translatable="false">top_rated</string>
 
     <!--    empty state values-->
-    <string name="main_emptystate_no_internet">No Internet Connection</string>
-    <string name="main_emptystate_api_invalid">Invalid API KEY</string>
-    <string name="main_emptystate_api_instructions">Go to Settings -> API KEY (Developer Options)</string>
-    <string name="main_emptystate_no_movies">No Movies Found</string>
-    <string name="main_emptystate_icon_panda">Here\'s a panda for you!</string>
-    <string name="main_emptystate_icon_sad">:(</string>
+    <string name="empty_state_no_internet">No Internet Connection</string>
+    <string name="empty_state_api_invalid">Invalid API KEY</string>
+    <string name="empty_state_api_instructions">Go to Settings -> API KEY (Developer Options)</string>
+    <string name="empty_state_no_movies">No Movies Found</string>
+    <string name="empty_state_icon_panda">Here\'s a panda for you!</string>
+    <string name="empty_state_icon_sad">:(</string>
+    <string name="empty_state_no_preview">No Available Preview</string>
 
     <!-- detail labels-->
     <string name="detail_rate_label">Rating: <xliff:g id="rate" example="5.0">%s</xliff:g></string>

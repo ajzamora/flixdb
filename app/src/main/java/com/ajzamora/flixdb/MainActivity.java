@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
             LoaderManager loaderManager = getSupportLoaderManager();
             loaderManager.initLoader(MOVIE_LOADER_ID, null, this);
         } else {
-            setEmptyState(R.string.main_emptystate_no_internet, R.drawable.ic_panda, R.string.main_emptystate_icon_panda);
+            setEmptyState(R.string.empty_state_no_internet, R.drawable.ic_panda, R.string.empty_state_icon_panda);
         }
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
@@ -163,9 +163,9 @@ public class MainActivity extends AppCompatActivity
             mMovieAdapter.setData(movies);
         } else {
             if (NetworkUtils.STATUS_CODE == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                setEmptyState(R.string.main_emptystate_api_invalid, R.drawable.ic_smart_key, R.string.main_emptystate_api_instructions);
+                setEmptyState(R.string.empty_state_api_invalid, R.drawable.ic_smart_key, R.string.empty_state_api_instructions);
             } else {
-                setEmptyState(R.string.main_emptystate_no_movies, R.drawable.ic_sad, R.string.main_emptystate_icon_sad);
+                setEmptyState(R.string.empty_state_no_movies, R.drawable.ic_sad, R.string.empty_state_icon_sad);
             }
         }
     }
