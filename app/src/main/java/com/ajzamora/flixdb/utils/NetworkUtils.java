@@ -21,6 +21,16 @@ public final class NetworkUtils {
     final static String API_PARAM = "api_key";
 
     // TODO: Refactor
+    public static Uri buildVideoUri(String videoKey) {
+        Uri builtUri = new Uri.Builder().scheme("https")
+                .authority("www.youtube.com")
+                .appendPath("watch")
+                .appendQueryParameter("v", videoKey)
+                .build();
+
+        return builtUri;
+    }
+
     public static URL buildTrailerUrl(String api, String id) {
         Uri builtUri = Uri.parse(TMDB_MOVIE_URL).buildUpon()
                 .appendPath(id)

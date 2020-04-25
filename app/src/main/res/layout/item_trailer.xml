@@ -14,4 +14,11 @@
         android:layout_height="@dimen/item_trailer_height"
         android:adjustViewBounds="true" />
 
+    <ImageView
+        android:id="@+id/imageview_item_trailer_play_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/outline_play_circle_outline_white_48"
+        android:layout_gravity="center"
+    />
 </FrameLayout>

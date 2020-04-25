@@ -18,9 +18,15 @@ import java.util.List;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder> {
     private List<Trailer> mTrailers;
+    final private RecyclerItemClickListener mOnClickListener;
 
-    public TrailerAdapter(List<Trailer> trailers) {
+    public TrailerAdapter(List<Trailer> trailers, RecyclerItemClickListener listener) {
         mTrailers = trailers;
+        mOnClickListener = listener;
+    }
+
+    public interface RecyclerItemClickListener {
+        void onListItemClick(int clickedItemIndex);
     }
 
     @NonNull
@@ -45,13 +51,15 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         return mTrailers.size();
     }
 
-    public final class TrailerViewHolder extends RecyclerView.ViewHolder {
+    public final class TrailerViewHolder extends RecyclerView.ViewHolder
+        implements View.OnClickListener {
         ImageView mItemTrailerIV;
         Trailer mCurrentTrailer;
 
         TrailerViewHolder(View itemView) {
             super(itemView);
             mItemTrailerIV = itemView.findViewById(R.id.imageview_item_trailer);
+            itemView.setOnClickListener(this);
         }
 
         void bind(Trailer currentTrailer) {
@@ -65,6 +73,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
                     .placeholder(android.R.color.background_dark)
                     .into(mItemTrailerIV);
         }
+
+        @Override
+        public void onClick(View v) {
+            mOnClickListener.onListItemClick(getAdapterPosition());
+        }
     }
 
     public void setData(List<Trailer> trailers) {
@@ -74,6 +87,10 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     public ArrayList<Trailer> getData() {
         return (ArrayList<Trailer>) mTrailers;
+    }
+
+    public Trailer getTrailerAt(int position) {
+        return mTrailers.get(position);
     }
 
     public void clear() {

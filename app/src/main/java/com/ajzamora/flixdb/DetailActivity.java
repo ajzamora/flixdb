@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,7 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<List<Trailer>> {
+        implements LoaderManager.LoaderCallbacks<List<Trailer>>,
+        TrailerAdapter.RecyclerItemClickListener {
     public static final int REQUEST_CODE = 2;
     public static final String EXTRA_TRAILERS = "extra_trailers";
     public static final String EXTRA_MOVIE = "extra_movie";
@@ -96,7 +99,7 @@ public class DetailActivity extends AppCompatActivity
         mDetailRV = findViewById(R.id.rv_trailer_detail);
         mDetailRV.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         mDetailRV.setHasFixedSize(true);
-        mTrailerAdapter = new TrailerAdapter(new ArrayList<Trailer>());
+        mTrailerAdapter = new TrailerAdapter(new ArrayList<Trailer>(), this);
         mDetailRV.setAdapter(mTrailerAdapter);
 
         mThumbIV = findViewById(R.id.iv_thumbnail_detail);
@@ -137,12 +140,27 @@ public class DetailActivity extends AppCompatActivity
 
     @Override
     public void finish() {
+        List<Trailer> oldTrailer = mMovie.getTrailers();
+        List<Trailer> newTrailer = mTrailerAdapter.getData();
         Intent intent = NavUtils.getParentActivityIntent(this);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         intent.putExtra(EXTRA_TRAILERS, mTrailerAdapter.getData());
         intent.putExtra(MainActivity.EXTRA_MOVIE_POS, mMoviePosition);
+//        if (!oldTrailer.equals(newTrailer)) {
         setResult(RESULT_OK, intent);
+//        } else {
+//            setResult(RESULT_CANCELED, intent);
+//        }
+
         NavUtils.navigateUpTo(this, intent);
+        if (oldTrailer != null) Log.v("asdf", "old" + oldTrailer.size());
+        if (newTrailer != null) Log.v("asdf", "new" + newTrailer.size());
+        if (oldTrailer != null && newTrailer != null)
+            Log.v("asdf", "-------" + oldTrailer.toString().equals(newTrailer.toString()) + "\n");
+        if (oldTrailer != null && newTrailer != null)
+            Log.v("asdf", "-------" + oldTrailer.equals(newTrailer));
+
         super.finish();
     }
 
@@ -178,5 +196,17 @@ public class DetailActivity extends AppCompatActivity
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        launchTrailer(clickedItemIndex);
+    }
+
+    private void launchTrailer(int trailerPosition) {
+        Trailer currentTrailer = mTrailerAdapter.getTrailerAt(trailerPosition);
+        Uri trailerUri = NetworkUtils.buildVideoUri(currentTrailer.getKey());
+        Intent playVideo = new Intent(Intent.ACTION_VIEW, trailerUri);
+        startActivity(playVideo);
     }
 }
