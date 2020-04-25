@@ -21,14 +21,28 @@ public final class NetworkUtils {
     final static String API_PARAM = "api_key";
 
     // TODO: Refactor
-    public static Uri buildVideoUri(String videoKey) {
-        Uri builtUri = new Uri.Builder().scheme("https")
-                .authority("www.youtube.com")
-                .appendPath("watch")
-                .appendQueryParameter("v", videoKey)
-                .build();
+    public static Uri buildVideoUri(String videoSite, String videoKey) {
+        final String YOUTUBE = "YouTube";
+        final String VIMEO = "Vimeo";
+        final String YOUTUBE_AUTHORITY = "www.youtube.com";
+        final String YOUTUBE_VIDEO_PATH = "watch";
+        final String YOUTUBE_VIDEO_PARAM = "v";
+        final String VIMEO_AUTHORITY = "www.vimeo.com";
 
-        return builtUri;
+        Uri.Builder uriBuilder = new Uri.Builder().scheme("https");
+        switch(videoSite) {
+            case YOUTUBE:
+                uriBuilder.authority(YOUTUBE_AUTHORITY);
+                uriBuilder.appendPath(YOUTUBE_VIDEO_PATH);
+                uriBuilder.appendQueryParameter(YOUTUBE_VIDEO_PARAM, videoKey);
+                break;
+            case VIMEO:
+                uriBuilder.authority(VIMEO_AUTHORITY);
+                uriBuilder.appendPath(videoKey);
+                break;
+            default: return null;
+        }
+        return uriBuilder.build();
     }
 
     public static URL buildTrailerUrl(String api, String id) {

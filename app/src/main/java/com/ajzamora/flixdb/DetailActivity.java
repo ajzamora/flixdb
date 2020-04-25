@@ -217,7 +217,7 @@ public class DetailActivity extends AppCompatActivity
 
     private void launchTrailer(int trailerPosition) {
         Trailer currentTrailer = mTrailerAdapter.getTrailerAt(trailerPosition);
-        Uri trailerUri = NetworkUtils.buildVideoUri(currentTrailer.getKey());
+        Uri trailerUri = NetworkUtils.buildVideoUri(currentTrailer.getSite(), currentTrailer.getKey());
         Intent playVideo = new Intent(Intent.ACTION_VIEW, trailerUri);
         startActivity(playVideo);
     }
