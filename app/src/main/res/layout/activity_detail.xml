@@ -193,7 +193,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_review_detail"
             android:layout_width="wrap_content"
-            android:layout_height="300dp"
+            android:layout_height="match_parent"
             android:scrollbars="vertical"
             android:paddingStart="@dimen/detail_review_padding_start"
             android:paddingLeft="@dimen/detail_review_padding_left"
