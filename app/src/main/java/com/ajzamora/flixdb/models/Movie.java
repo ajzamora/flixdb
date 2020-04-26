@@ -17,6 +17,8 @@ public class Movie implements Parcelable {
     private String mRating;
     private String mReleaseDate;
     private List<Trailer> mTrailers;
+    private List<Review> mReviews;
+
 
     private Movie(Builder b) {
         mId = b.id;
@@ -27,6 +29,7 @@ public class Movie implements Parcelable {
         mRating = b.rating;
         mReleaseDate = b.releaseDate;
         mTrailers = b.trailers;
+        mReviews = b.reviews;
     }
 
     public static final class Builder {
@@ -38,6 +41,7 @@ public class Movie implements Parcelable {
         private String rating;
         private String releaseDate;
         private List<Trailer> trailers;
+        private List<Review> reviews;
 
         public Builder() {
 
@@ -80,6 +84,11 @@ public class Movie implements Parcelable {
 
         public Builder trailers(List<Trailer> trailers) {
             this.trailers = trailers;
+            return this;
+        }
+
+        public Builder reviews(List<Review> reviews) {
+            this.reviews = reviews;
             return this;
         }
 
@@ -129,10 +138,20 @@ public class Movie implements Parcelable {
         return mReleaseDate;
     }
 
-    public void setTrailers(List<Trailer> trailers) { mTrailers = trailers; }
+    public void setTrailers(List<Trailer> trailers) {
+        mTrailers = trailers;
+    }
 
     public List<Trailer> getTrailers() {
         return mTrailers;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        mReviews = reviews;
+    }
+
+    public List<Review> getReviews() {
+        return mReviews;
     }
 
     @Override
@@ -157,6 +176,7 @@ public class Movie implements Parcelable {
         mRating = in.readString();
         mReleaseDate = in.readString();
         mTrailers = in.createTypedArrayList(Trailer.CREATOR);
+        mReviews = in.createTypedArrayList(Review.CREATOR);
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -186,5 +206,6 @@ public class Movie implements Parcelable {
         dest.writeString(mRating);
         dest.writeString(mReleaseDate);
         dest.writeTypedList(mTrailers);
+        dest.writeTypedList(mReviews);
     }
 }

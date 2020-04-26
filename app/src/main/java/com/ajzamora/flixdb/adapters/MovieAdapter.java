@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ajzamora.flixdb.R;
 import com.ajzamora.flixdb.models.Movie;
+import com.ajzamora.flixdb.models.Review;
 import com.ajzamora.flixdb.models.Trailer;
 import com.squareup.picasso.Picasso;
 
@@ -74,11 +75,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             Picasso.get()
                     .load(currentMovie.getThumbnail())
                     .into(mItemMovieIV);
-            int trailerCount = 0;
+            int trailerCount = 0, reviewCount = 0;
             if (!(currentMovie.getTrailers() == null || currentMovie.getTrailers().isEmpty())) {
                 trailerCount = currentMovie.getTrailers().size();
             }
+
+            if (!(currentMovie.getReviews() == null || currentMovie.getReviews().isEmpty())) {
+                reviewCount = currentMovie.getReviews().size();
+            }
             mItemMovieTrailerCountTV.setText(String.valueOf(trailerCount));
+            mItemMovieTrailerCountTV.append(" - " + (reviewCount));
         }
 
         @Override
@@ -90,7 +96,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void setTrailerListAt(int position, List<Trailer> trailers) {
         Movie currentMovie = mMovies.get(position);
         currentMovie.setTrailers(trailers);
-        mMovies.set(position, currentMovie);
+        notifyItemChanged(position);
+    }
+
+    public void setReviewListAt(int position, List<Review> reviews) {
+        Movie currentMovie = mMovies.get(position);
+        currentMovie.setReviews(reviews);
         notifyItemChanged(position);
     }
 

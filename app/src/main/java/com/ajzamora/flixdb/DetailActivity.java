@@ -8,11 +8,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,6 +42,7 @@ public class DetailActivity extends AppCompatActivity
         implements TrailerAdapter.RecyclerItemClickListener {
     public static final int REQUEST_CODE = 2;
     public static final String EXTRA_TRAILERS = "extra_trailers";
+    public static final String EXTRA_REVIEWS = "extra_reviews";
     public static final String EXTRA_MOVIE = "extra_movie";
 
     private static final int TRAILER_LOADER_ID = 2;
@@ -156,6 +155,10 @@ public class DetailActivity extends AppCompatActivity
             if (mMovie.getTrailers() != null && !mMovie.getTrailers().isEmpty()) {
                 mTrailerAdapter.setData(mMovie.getTrailers());
             }
+
+            if (mMovie.getReviews() != null && !mMovie.getReviews().isEmpty()) {
+                mReviewAdapter.setData(mMovie.getReviews());
+            }
         }
 
         if (isOnline()) {
@@ -233,27 +236,12 @@ public class DetailActivity extends AppCompatActivity
 
     @Override
     public void finish() {
-        List<Trailer> oldTrailer = mMovie.getTrailers();
-        List<Trailer> newTrailer = mTrailerAdapter.getData();
         Intent intent = NavUtils.getParentActivityIntent(this);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
         intent.putExtra(EXTRA_TRAILERS, mTrailerAdapter.getData());
         intent.putExtra(MainActivity.EXTRA_MOVIE_POS, mMoviePosition);
-//        if (!oldTrailer.equals(newTrailer)) {
+        intent.putExtra(DetailActivity.EXTRA_REVIEWS, mReviewAdapter.getData());
         setResult(RESULT_OK, intent);
-//        } else {
-//            setResult(RESULT_CANCELED, intent);
-//        }
-
-        NavUtils.navigateUpTo(this, intent);
-        if (oldTrailer != null) Log.v("asdf", "old" + oldTrailer.size());
-        if (newTrailer != null) Log.v("asdf", "new" + newTrailer.size());
-        if (oldTrailer != null && newTrailer != null)
-            Log.v("asdf", "-------" + oldTrailer.toString().equals(newTrailer.toString()) + "\n");
-        if (oldTrailer != null && newTrailer != null)
-            Log.v("asdf", "-------" + oldTrailer.equals(newTrailer));
-
         super.finish();
     }
 

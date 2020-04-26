@@ -27,12 +27,12 @@ import com.ajzamora.flixdb.adapters.MovieAdapter;
 import com.ajzamora.flixdb.loaders.MovieLoader;
 import com.ajzamora.flixdb.models.FlixPreferences;
 import com.ajzamora.flixdb.models.Movie;
+import com.ajzamora.flixdb.models.Review;
 import com.ajzamora.flixdb.models.Trailer;
 import com.ajzamora.flixdb.utils.LayoutUtils;
 import com.ajzamora.flixdb.utils.NetworkUtils;
 
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -195,6 +195,9 @@ public class MainActivity extends AppCompatActivity
             int moviePosition = data.getIntExtra(MainActivity.EXTRA_MOVIE_POS, MainActivity.EXTRA_MOVIE_POS_DEFAULT);
             List<Trailer> trailers = data.getParcelableArrayListExtra(DetailActivity.EXTRA_TRAILERS);
             mMovieAdapter.setTrailerListAt(moviePosition, trailers);
+
+            List<Review> reviews = data.getParcelableArrayListExtra(DetailActivity.EXTRA_REVIEWS);
+            mMovieAdapter.setReviewListAt(moviePosition, reviews);
         }
     }
 

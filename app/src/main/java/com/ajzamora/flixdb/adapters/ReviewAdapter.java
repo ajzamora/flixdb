@@ -69,6 +69,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         notifyDataSetChanged();
     }
 
+    public ArrayList<Review> getData() {
+        return (ArrayList<Review>) mReviews;
+    }
+
     public Review getReviewAt(int position) {
         return mReviews.get(position);
     }
