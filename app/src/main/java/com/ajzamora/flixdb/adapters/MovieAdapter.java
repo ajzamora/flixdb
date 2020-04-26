@@ -22,6 +22,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private List<Movie> mMovies;
     final private RecyclerItemClickListener mOnClickListener;
 
+    public MovieAdapter(RecyclerItemClickListener listener) {
+        this(new ArrayList<Movie>(), listener);
+    }
+
     public MovieAdapter(List<Movie> movies, RecyclerItemClickListener listener) {
         mMovies = movies;
         mOnClickListener = listener;
@@ -65,8 +69,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             itemView.setOnClickListener(this);
         }
 
-        void bind(int clickedItemIndex) {
-            Movie currentMovie = getMovieAt(clickedItemIndex);
+        void bind(int position) {
+            Movie currentMovie = getMovieAt(position);
             Picasso.get()
                     .load(currentMovie.getThumbnail())
                     .into(mItemMovieIV);

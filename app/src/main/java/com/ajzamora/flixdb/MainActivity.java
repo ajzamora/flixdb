@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         mMainRV.setLayoutManager(new GridLayoutManager(this, mNoOfColumns));
         mMainRV.setHasFixedSize(true);
 
-        mMovieAdapter = new MovieAdapter(new ArrayList<Movie>(), this);
+        mMovieAdapter = new MovieAdapter(this);
         mMainRV.setAdapter(mMovieAdapter);
     }
 

@@ -20,6 +20,10 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     private List<Trailer> mTrailers;
     final private RecyclerItemClickListener mOnClickListener;
 
+    public TrailerAdapter(RecyclerItemClickListener listener) {
+        this(new ArrayList<Trailer>(), listener);
+    }
+
     public TrailerAdapter(List<Trailer> trailers, RecyclerItemClickListener listener) {
         mTrailers = trailers;
         mOnClickListener = listener;
@@ -42,8 +46,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     @Override
     public void onBindViewHolder(@NonNull TrailerViewHolder holder, int position) {
-        Trailer currentTrailer = mTrailers.get(position);
-        holder.bind(currentTrailer);
+        holder.bind(position);
     }
 
     @Override
@@ -54,7 +57,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     public final class TrailerViewHolder extends RecyclerView.ViewHolder
         implements View.OnClickListener {
         ImageView mItemTrailerIV;
-        Trailer mCurrentTrailer;
 
         TrailerViewHolder(View itemView) {
             super(itemView);
@@ -62,8 +64,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
             itemView.setOnClickListener(this);
         }
 
-        void bind(Trailer currentTrailer) {
-            mCurrentTrailer = currentTrailer;
+        void bind(int position) {
+            Trailer currentTrailer = mTrailers.get(position);
 
             String imgPath = "https://img.youtube.com/vi/"
                     .concat(currentTrailer.getKey())
