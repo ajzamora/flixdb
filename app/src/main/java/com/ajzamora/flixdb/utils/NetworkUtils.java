@@ -21,6 +21,24 @@ public final class NetworkUtils {
     final static String API_PARAM = "api_key";
 
     // TODO: Refactor
+    public static URL buildReviewUrl(String api, String id) {
+        Uri builtUri = Uri.parse(TMDB_MOVIE_URL).buildUpon()
+                .appendPath(id)
+                .appendPath("reviews")
+                .appendQueryParameter(API_PARAM, api)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException exception) {
+            Log.e(LOG_TAG, "Error with creating URL", exception);
+        }
+
+        Log.v(LOG_TAG, "Built URI " + url);
+        return url;
+    }
+
     public static Uri buildVideoUri(String videoSite, String videoKey) {
         final String YOUTUBE = "YouTube";
         final String VIMEO = "Vimeo";

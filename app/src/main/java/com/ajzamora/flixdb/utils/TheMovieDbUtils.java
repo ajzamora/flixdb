@@ -1,6 +1,7 @@
 package com.ajzamora.flixdb.utils;
 
 import com.ajzamora.flixdb.models.Movie;
+import com.ajzamora.flixdb.models.Review;
 import com.ajzamora.flixdb.models.Trailer;
 
 import org.json.JSONArray;
@@ -120,5 +121,51 @@ public final class TheMovieDbUtils {
             trailers.add(trailerBuilder.build());
         }
         return trailers;
+    }
+
+    public static ArrayList<Review> getSimpleReviewStringsFromJson(String reviewJSONstr) throws JSONException {
+        final int LOAD_TIME_IN_MILLISECONDS = 2000;
+        try {
+            Thread.sleep(LOAD_TIME_IN_MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject reviewJson = new JSONObject(reviewJSONstr);
+        final String REVIEW_RESULTS = "results";
+        final String REVIEW_AUTHOR = "author";
+        final String REVIEW_CONTENT = "content";
+        final String REVIEW_STATUS_CODE = "status_code";
+
+        if (reviewJson.has(REVIEW_STATUS_CODE)) {
+            int errorCode = reviewJson.getInt(REVIEW_STATUS_CODE);
+
+            switch (errorCode) {
+                case HttpURLConnection.HTTP_OK:
+                    break;
+                case HttpURLConnection.HTTP_NOT_FOUND:
+                    /* Location invalid */
+                    return null;
+                default:
+                    /* Server probably down */
+                    return null;
+            }
+        }
+
+        ArrayList<Review> reviews = new ArrayList<>();
+        JSONObject baseJSON = new JSONObject(reviewJSONstr);
+        JSONArray resultsArray = baseJSON.getJSONArray(REVIEW_RESULTS);
+        for (int i = 0; i < resultsArray.length(); i++) {
+            Review.Builder reviewBuilder = new Review.Builder();
+            JSONObject currentReview = resultsArray.getJSONObject(i);
+            String author = currentReview.getString(REVIEW_AUTHOR);
+            String content = currentReview.getString(REVIEW_CONTENT);
+
+            reviewBuilder.author(author)
+                    .content(content);
+
+            reviews.add(reviewBuilder.build());
+        }
+        return reviews;
     }
 }
