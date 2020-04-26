@@ -64,7 +64,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         }
     }
 
+    public void setData(List<Review> reviews) {
+        mReviews = reviews;
+        notifyDataSetChanged();
+    }
+
     public Review getReviewAt(int position) {
         return mReviews.get(position);
+    }
+
+    public void clear() {
+        setData(new ArrayList<Review>());
     }
 }

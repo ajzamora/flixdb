@@ -30,9 +30,11 @@
     <string name="empty_state_icon_panda">Here\'s a panda for you!</string>
     <string name="empty_state_icon_sad">:(</string>
     <string name="empty_state_no_preview">No Available Preview</string>
+    <string name="empty_state_no_review">No Available Review</string>
 
     <!-- detail labels-->
     <string name="detail_rate_label">Rating: <xliff:g id="rate" example="5.0">%s</xliff:g></string>
     <string name="detail_date_label">Release Date: <xliff:g id="rate" example="2020-03-05">%s</xliff:g></string>
     <string name="detail_trailer_label">Trailers: </string>
+    <string name="detail_review_label">Reviews: </string>
 </resources>

@@ -85,4 +85,21 @@
     <dimen name="detail_empty_trailer_label_padding_end">@dimen/all_padding_big</dimen>
     <dimen name="detail_trailer_label_text_size">22sp</dimen>
     <dimen name="detail_empty_trailer_label_text_size">14sp</dimen>
+    <dimen name="detail_review_label_text_size">22sp</dimen>
+    <dimen name="detail_empty_review_label_text_size">14sp</dimen>
+    <dimen name="detail_review_label_padding_left">@dimen/all_padding_big</dimen>
+    <dimen name="detail_review_label_padding_right">@dimen/all_padding_big</dimen>
+    <dimen name="detail_review_label_padding_start">@dimen/all_padding_big</dimen>
+    <dimen name="detail_review_label_padding_end">@dimen/all_padding_big</dimen>
+    <dimen name="detail_empty_review_label_padding_left">@dimen/all_padding_big</dimen>
+    <dimen name="detail_empty_review_label_padding_right">@dimen/all_padding_big</dimen>
+    <dimen name="detail_empty_review_label_padding_start">@dimen/all_padding_big</dimen>
+    <dimen name="detail_empty_review_label_padding_end">@dimen/all_padding_big</dimen>
+    <dimen name="detail_review_padding_left">@dimen/all_padding_big</dimen>
+    <dimen name="detail_review_padding_right">@dimen/all_padding_big</dimen>
+    <dimen name="detail_review_padding_start">@dimen/all_padding_big</dimen>
+    <dimen name="detail_review_padding_end">@dimen/all_padding_big</dimen>
+    <dimen name="detail_review_padding_top">@dimen/all_padding_small</dimen>
+    <dimen name="detail_review_padding_bottom">@dimen/all_padding_small</dimen>
+
 </resources>

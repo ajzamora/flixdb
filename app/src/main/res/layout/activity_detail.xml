@@ -24,16 +24,6 @@
                 android:scaleType="centerCrop" />
         </FrameLayout>
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/play_icon"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:src="@android:drawable/ic_media_play"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@id/fl_backdrop_detail"-->
-        <!--            app:layout_constraintEnd_toEndOf="@id/fl_backdrop_detail"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/fl_backdrop_detail"-->
-        <!--            app:layout_constraintTop_toTopOf="@id/fl_backdrop_detail" />-->
-
         <ImageView
             android:id="@+id/iv_thumbnail_detail"
             android:layout_width="@dimen/detail_thumbnail_width"
@@ -151,7 +141,6 @@
             android:paddingEnd="@dimen/detail_empty_trailer_label_padding_end"
             android:paddingRight="@dimen/detail_empty_trailer_label_padding_right"
             android:textStyle="italic"
-            android:textColorHighlight="@android:color/background_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_trailer_label_detail"
@@ -171,5 +160,48 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_trailer_label_detail" />
 
+        <TextView
+            android:id="@+id/tv_review_label_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_review_label"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/detail_review_label_text_size"
+            android:paddingStart="@dimen/detail_review_label_padding_start"
+            android:paddingLeft="@dimen/detail_review_label_padding_left"
+            android:paddingEnd="@dimen/detail_review_label_padding_end"
+            android:paddingRight="@dimen/detail_review_label_padding_right"
+            app:layout_constraintBottom_toTopOf="@id/rv_review_detail"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_trailer_detail" />
+
+        <TextView
+            android:id="@+id/tv_empty_review_detail"
+            android:layout_width="@dimen/all_width_none"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_empty_review_label_text_size"
+            android:paddingStart="@dimen/detail_empty_review_label_padding_start"
+            android:paddingLeft="@dimen/detail_empty_review_label_padding_left"
+            android:paddingEnd="@dimen/detail_empty_review_label_padding_end"
+            android:paddingRight="@dimen/detail_empty_review_label_padding_right"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_review_label_detail"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_review_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:scrollbars="vertical"
+            android:paddingStart="@dimen/detail_review_padding_start"
+            android:paddingLeft="@dimen/detail_review_padding_left"
+            android:paddingEnd="@dimen/detail_review_padding_end"
+            android:paddingRight="@dimen/detail_review_padding_right"
+            android:paddingTop="@dimen/detail_review_padding_top"
+            android:paddingBottom="@dimen/detail_review_padding_bottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_review_label_detail" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
