@@ -119,11 +119,19 @@ public class Movie implements Parcelable {
     }
 
     public String getThumbnail() {
+        return mThumbnail;
+    }
+
+    public String getThumbnailUrl() {
         return IMAGE_URL.concat(mThumbnail);
     }
 
-    public String getBackdrop() {
+    public String getBackdropUrl() {
         return IMAGE_BACKDROP_URL.concat(mBackdrop);
+    }
+
+    public String getBackdrop() {
+        return mBackdrop;
     }
 
     public String getPlot() {

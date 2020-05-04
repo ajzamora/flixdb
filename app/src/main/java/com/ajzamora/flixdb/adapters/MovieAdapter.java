@@ -73,7 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         void bind(int position) {
             Movie currentMovie = getMovieAt(position);
             Picasso.get()
-                    .load(currentMovie.getThumbnail())
+                    .load(currentMovie.getThumbnailUrl())
                     .into(mItemMovieIV);
             int trailerCount = 0, reviewCount = 0;
             if (!(currentMovie.getTrailers() == null || currentMovie.getTrailers().isEmpty())) {
