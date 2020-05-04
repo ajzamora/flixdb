@@ -212,10 +212,10 @@ public class DetailActivity extends AppCompatActivity
 
     private void populateUI(Movie movie) {
         Picasso.get()
-                .load(movie.getThumbnail())
+                .load(movie.getThumbnailUrl())
                 .into(mThumbIV);
         Picasso.get()
-                .load(movie.getBackdrop())
+                .load(movie.getBackdropUrl())
                 .into(mBackdropIV);
         mTitleTV.setText(movie.getTitle());
         mPlotTV.setText(movie.getPlot());

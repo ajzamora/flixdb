@@ -29,6 +29,8 @@ import com.ajzamora.flixdb.models.FlixPreferences;
 import com.ajzamora.flixdb.models.Movie;
 import com.ajzamora.flixdb.models.Review;
 import com.ajzamora.flixdb.models.Trailer;
+import com.ajzamora.flixdb.sync.SyncAdapter;
+import com.ajzamora.flixdb.utils.AccountUtils;
 import com.ajzamora.flixdb.utils.LayoutUtils;
 import com.ajzamora.flixdb.utils.NetworkUtils;
 
@@ -68,6 +70,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+
+        // Create your sync account
+        AccountUtils.createSyncAccount(this);
+
+        // Perform a manual sync by calling this:
+        SyncAdapter.performSync();
+
     }
 
     public void initUI() {
