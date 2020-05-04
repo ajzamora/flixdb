@@ -13,7 +13,36 @@ import java.util.ArrayList;
 
 public final class TheMovieDbUtils {
 
-    public static ArrayList<Movie> getSimpleMovieStringsFromJson(String movieJSONstr) throws JSONException {
+    public static final String TMDB_RESULTS = "results";
+    public static final String TMDB_ID = "id";
+    public static final String TMDB_TITLE = "title";
+    public static final String TMDB_THUMBNAIL = "poster_path";
+    public static final String TMDB_BACKDROP = "backdrop_path";
+    public static final String TMDB_PLOT = "overview";
+    public static final String TMDB_RATING = "vote_average";
+    public static final String TMDB_RELEASE_DATE = "release_date";
+    public static final String TMDB_STATUS_CODE = "status_code";
+
+    public static Movie parseMovie(JSONObject movieJSONObj) throws JSONException {
+        String id = movieJSONObj.getString(TMDB_ID);
+        String title = movieJSONObj.getString(TMDB_TITLE);
+        String thumbnail = movieJSONObj.getString(TMDB_THUMBNAIL);
+        String backdrop = movieJSONObj.getString(TMDB_BACKDROP);
+        String plot = movieJSONObj.getString(TMDB_PLOT);
+        String rating = movieJSONObj.getString(TMDB_RATING);
+        String releaseDate = movieJSONObj.getString(TMDB_RELEASE_DATE);
+
+        return new Movie.Builder().id(id)
+                .title(title)
+                .thumbnail(thumbnail)
+                .backdrop(backdrop)
+                .plot(plot)
+                .rating(rating)
+                .releaseDate(releaseDate)
+                .build();
+    }
+
+    public static JSONArray getMovieResultsJsonArray(String movieJSONstr) throws JSONException {
         final int LOAD_TIME_IN_MILLISECONDS = 2000;
         try {
             Thread.sleep(LOAD_TIME_IN_MILLISECONDS);
@@ -22,16 +51,6 @@ public final class TheMovieDbUtils {
         }
 
         JSONObject movieJson = new JSONObject(movieJSONstr);
-        final String TMDB_RESULTS = "results";
-        final String TMDB_ID = "id";
-        final String TMDB_TITLE = "title";
-        final String TMDB_THUMBNAIL = "poster_path";
-        final String TMDB_BACKDROP = "backdrop_path";
-        final String TMDB_PLOT = "overview";
-        final String TMDB_RATING = "vote_average";
-        final String TMDB_RELEASE_DATE = "release_date";
-        final String TMDB_STATUS_CODE = "status_code";
-
         if (movieJson.has(TMDB_STATUS_CODE)) {
             int errorCode = movieJson.getInt(TMDB_STATUS_CODE);
 
@@ -47,29 +66,17 @@ public final class TheMovieDbUtils {
             }
         }
 
-        ArrayList<Movie> movies = new ArrayList<>();
-
         JSONObject baseJSON = new JSONObject(movieJSONstr);
-        JSONArray resultsArray = baseJSON.getJSONArray(TMDB_RESULTS);
-        for (int i = 0; i < resultsArray.length(); i++) {
-            Movie.Builder movieBuilder = new Movie.Builder();
-            JSONObject currentMovie = resultsArray.getJSONObject(i);
-            String id = currentMovie.getString(TMDB_ID);
-            String title = currentMovie.getString(TMDB_TITLE);
-            String thumbnail = currentMovie.getString(TMDB_THUMBNAIL);
-            String backdrop = currentMovie.getString(TMDB_BACKDROP);
-            String plot = currentMovie.getString(TMDB_PLOT);
-            String rating = currentMovie.getString(TMDB_RATING);
-            String releaseDate = currentMovie.getString(TMDB_RELEASE_DATE);
+        return baseJSON.getJSONArray(TMDB_RESULTS);
+    }
 
-            movieBuilder.id(id)
-                    .title(title)
-                    .thumbnail(thumbnail)
-                    .backdrop(backdrop)
-                    .plot(plot)
-                    .rating(rating)
-                    .releaseDate(releaseDate);
-            movies.add(movieBuilder.build());
+    public static ArrayList<Movie> getSimpleMovieStringsFromJson(String movieJSONstr) throws JSONException {
+        JSONArray resultsArray = getMovieResultsJsonArray(movieJSONstr);
+        ArrayList<Movie> movies = new ArrayList<>();
+        for (int i = 0; i < resultsArray.length(); i++) {
+            JSONObject currentMovieJSONObj = resultsArray.getJSONObject(i);
+            Movie currentMovie = parseMovie(currentMovieJSONObj);
+            movies.add(currentMovie);
         }
         return movies;
     }
