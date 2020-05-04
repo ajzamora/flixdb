@@ -24,6 +24,7 @@ public class MovieClient extends SQLiteOpenHelper {
         sb.append(MovieEntry.COLUMN_MOVIE_THUMBNAIL).append(" TEXT, ");
         sb.append(MovieEntry.COLUMN_MOVIE_BACKDROP).append(" TEXT, ");
         sb.append(MovieEntry.COLUMN_MOVIE_PLOT).append(" TEXT, ");
+        sb.append(MovieEntry.COLUMN_MOVIE_POPULARITY).append(" TEXT, ");
         sb.append(MovieEntry.COLUMN_MOVIE_RATING).append(" TEXT, ");
         sb.append(MovieEntry.COLUMN_MOVIE_RELEASE_DATE).append(" TEXT, ");
         sb.append(MovieEntry.COLUMN_MOVIE_TRAILERS_ID).append(" INTEGER, ");

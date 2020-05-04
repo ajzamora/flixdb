@@ -14,6 +14,7 @@ public class Movie implements Parcelable {
     private String mThumbnail;
     private String mBackdrop;
     private String mPlot;
+    private String mPopularity;
     private String mRating;
     private String mReleaseDate;
     private List<Trailer> mTrailers;
@@ -26,6 +27,7 @@ public class Movie implements Parcelable {
         mThumbnail = b.thumbnail;
         mBackdrop = b.backdrop;
         mPlot = b.plot;
+        mPopularity = b.popularity;
         mRating = b.rating;
         mReleaseDate = b.releaseDate;
         mTrailers = b.trailers;
@@ -38,6 +40,7 @@ public class Movie implements Parcelable {
         private String thumbnail;
         private String backdrop;
         private String plot;
+        private String popularity;
         private String rating;
         private String releaseDate;
         private List<Trailer> trailers;
@@ -69,6 +72,11 @@ public class Movie implements Parcelable {
 
         public Builder plot(String plot) {
             this.plot = plot;
+            return this;
+        }
+
+        public Builder popularity(String popularity) {
+            this.popularity = popularity;
             return this;
         }
 
@@ -104,6 +112,7 @@ public class Movie implements Parcelable {
                     ", thumbnail='" + thumbnail + '\'' +
                     ", backdrop='" + backdrop + '\'' +
                     ", plot='" + plot + '\'' +
+                    ", popularity='" + popularity + '\'' +
                     ", rating='" + rating + '\'' +
                     ", releaseDate='" + releaseDate + '\'' +
                     '}';
@@ -138,6 +147,10 @@ public class Movie implements Parcelable {
         return mPlot;
     }
 
+    public String getPopularity() {
+        return mPopularity;
+    }
+
     public String getRating() {
         return mRating;
     }
@@ -170,6 +183,7 @@ public class Movie implements Parcelable {
                 ", mThumbnail='" + mThumbnail + '\'' +
                 ", mBackdrop='" + mBackdrop + '\'' +
                 ", mPlot='" + mPlot + '\'' +
+                ", mPopularity='" + mPopularity + '\'' +
                 ", mRating='" + mRating + '\'' +
                 ", mReleaseDate='" + mReleaseDate + '\'' +
                 '}';
@@ -181,6 +195,7 @@ public class Movie implements Parcelable {
         mThumbnail = in.readString();
         mBackdrop = in.readString();
         mPlot = in.readString();
+        mPopularity = in.readString();
         mRating = in.readString();
         mReleaseDate = in.readString();
         mTrailers = in.createTypedArrayList(Trailer.CREATOR);
@@ -211,6 +226,7 @@ public class Movie implements Parcelable {
         dest.writeString(mThumbnail);
         dest.writeString(mBackdrop);
         dest.writeString(mPlot);
+        dest.writeString(mPopularity);
         dest.writeString(mRating);
         dest.writeString(mReleaseDate);
         dest.writeTypedList(mTrailers);

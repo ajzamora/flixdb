@@ -19,6 +19,7 @@ public final class TheMovieDbUtils {
     public static final String TMDB_THUMBNAIL = "poster_path";
     public static final String TMDB_BACKDROP = "backdrop_path";
     public static final String TMDB_PLOT = "overview";
+    public static final String TMDB_POPULARITY = "popularity";
     public static final String TMDB_RATING = "vote_average";
     public static final String TMDB_RELEASE_DATE = "release_date";
     public static final String TMDB_STATUS_CODE = "status_code";
@@ -29,6 +30,7 @@ public final class TheMovieDbUtils {
         String thumbnail = movieJSONObj.getString(TMDB_THUMBNAIL);
         String backdrop = movieJSONObj.getString(TMDB_BACKDROP);
         String plot = movieJSONObj.getString(TMDB_PLOT);
+        String popularity = movieJSONObj.getString(TMDB_POPULARITY);
         String rating = movieJSONObj.getString(TMDB_RATING);
         String releaseDate = movieJSONObj.getString(TMDB_RELEASE_DATE);
 
@@ -37,6 +39,7 @@ public final class TheMovieDbUtils {
                 .thumbnail(thumbnail)
                 .backdrop(backdrop)
                 .plot(plot)
+                .popularity(popularity)
                 .rating(rating)
                 .releaseDate(releaseDate)
                 .build();

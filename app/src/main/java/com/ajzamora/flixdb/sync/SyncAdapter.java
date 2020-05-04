@@ -116,43 +116,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      *
      * @param syncResult Write our stats to this
      */
-    private void syncMovies2(SyncResult syncResult, String jsonMovieResponse) throws IOException, JSONException, RemoteException, OperationApplicationException {
-        // We need to collect all the network items in a hash table
-        Log.i(TAG, "Fetching server entries...");
-        Map<String, Movie> networkEntries = new HashMap<>();
-
-        mContentResolver.delete(MovieEntry.CONTENT_URI, null, null);
-        // Create list for batching ContentProvider transactions
-        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
-        JSONArray movieJSONArray = TheMovieDbUtils.getMovieResultsJsonArray(jsonMovieResponse);
-        for (int i = 0; i < movieJSONArray.length(); i++) {
-            Movie movie = TheMovieDbUtils.parseMovie(movieJSONArray.getJSONObject(i));
-            networkEntries.put(movie.getId(), movie);
-            Log.i(TAG, "Scheduling insert: " + movie.getTitle());
-            batch.add(ContentProviderOperation.newInsert(MovieEntry.CONTENT_URI)
-                    .withValue(MovieEntry.COLUMN_MOVIE_TITLE, movie.getTitle())
-                    .withValue(MovieEntry.COLUMN_MOVIE_PLOT, movie.getPlot())
-                    .withValue(MovieEntry.COLUMN_MOVIE_THUMBNAIL, movie.getThumbnail())
-                    .withValue(MovieEntry.COLUMN_MOVIE_BACKDROP, movie.getBackdrop())
-                    .withValue(MovieEntry.COLUMN_MOVIE_RATING, movie.getRating())
-                    .withValue(MovieEntry.COLUMN_MOVIE_RELEASE_DATE, movie.getReleaseDate())
-                    .build());
-            syncResult.stats.numInserts++;
-        }
-
-        // Synchronize by performing batch update
-        Log.i(TAG, "Merge solution ready, applying batch update...");
-        mContentResolver.applyBatch(MovieContract.CONTENT_AUTHORITY, batch);
-        mContentResolver.notifyChange(MovieEntry.CONTENT_URI, // URI where data was modified
-                null, // No local observer
-                false); // IMPORTANT: Do not sync to network
-    }
-
-    /**
-     * Performs synchronization of our pretend news feed source.
-     *
-     * @param syncResult Write our stats to this
-     */
     private void syncMovies(SyncResult syncResult, String jsonMovieResponse) throws IOException, JSONException, RemoteException, OperationApplicationException {
         // We need to collect all the network items in a hash table
         Log.i(TAG, "Fetching server entries...");
@@ -164,16 +127,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             networkEntries.put(movie.getId(), movie);
         }
 
-        //        TODO: A
-        mContentResolver.delete(MovieEntry.CONTENT_URI, null, null);
         // Create list for batching ContentProvider transactions
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
         // Compare the hash table of network entries to all the local entries
         Log.i(TAG, "Fetching local entries...");
         Cursor moviesCursor = mContentResolver.query(MovieEntry.CONTENT_URI, null, null, null, null, null);
         assert moviesCursor != null;
-        moviesCursor.moveToFirst();
-
 
         while (moviesCursor.moveToNext()) {
             syncResult.stats.numEntries++;
@@ -182,6 +141,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             int idColIdx = moviesCursor.getColumnIndex(MovieEntry._ID);
             int titleColIdx = moviesCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_TITLE);
             int plotColIdx = moviesCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_PLOT);
+            int popColIdx = moviesCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_POPULARITY);
             int thumbnailColIdx = moviesCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_THUMBNAIL);
             int backdropColIdx = moviesCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_BACKDROP);
             int rateColIdx = moviesCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_RATING);
@@ -191,6 +151,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             String id = moviesCursor.getString(idColIdx);
             String title = moviesCursor.getString(titleColIdx);
             String plot = moviesCursor.getString(plotColIdx);
+            String popularity = moviesCursor.getString(popColIdx);
             String thumbnail = moviesCursor.getString(thumbnailColIdx);
             String backdrop = moviesCursor.getString(backdropColIdx);
             String rate = moviesCursor.getString(rateColIdx);
@@ -207,6 +168,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 // Check to see if it needs to be updated
                 if (!title.equals(found.getTitle())
                         || !plot.equals(found.getPlot())
+                        || !popularity.equals(found.getPopularity())
                         || !thumbnail.equals(found.getThumbnail())
                         || !backdrop.equals(found.getBackdrop())
                         || !rate.equals(found.getRating())
@@ -218,6 +180,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             .withSelection(MovieEntry._ID + "='" + id + "'", null)
                             .withValue(MovieEntry.COLUMN_MOVIE_TITLE, found.getTitle())
                             .withValue(MovieEntry.COLUMN_MOVIE_PLOT, found.getPlot())
+                            .withValue(MovieEntry.COLUMN_MOVIE_POPULARITY, found.getPopularity())
                             .withValue(MovieEntry.COLUMN_MOVIE_THUMBNAIL, found.getThumbnail())
                             .withValue(MovieEntry.COLUMN_MOVIE_BACKDROP, found.getBackdrop())
                             .withValue(MovieEntry.COLUMN_MOVIE_RATING, found.getRating())
@@ -242,6 +205,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             batch.add(ContentProviderOperation.newInsert(MovieEntry.CONTENT_URI)
                     .withValue(MovieEntry.COLUMN_MOVIE_TITLE, movie.getTitle())
                     .withValue(MovieEntry.COLUMN_MOVIE_PLOT, movie.getPlot())
+                    .withValue(MovieEntry.COLUMN_MOVIE_POPULARITY, movie.getPopularity())
                     .withValue(MovieEntry.COLUMN_MOVIE_THUMBNAIL, movie.getThumbnail())
                     .withValue(MovieEntry.COLUMN_MOVIE_BACKDROP, movie.getBackdrop())
                     .withValue(MovieEntry.COLUMN_MOVIE_RATING, movie.getRating())
@@ -257,47 +221,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 null, // No local observer
                 false); // IMPORTANT: Do not sync to network
     }
-
-    /**
-     * A blocking method to stream the server's content and build it into a string.
-     *
-     * @param url API call
-     * @return String response
-     */
-//    private String download(String url) throws IOException {
-//        // Ensure we ALWAYS close these!
-//        HttpURLConnection client = null;
-//        InputStream is = null;
-//
-//        try {
-//            // Connect to the server using GET protocol
-//            URL server = new URL(url);
-//            client = (HttpURLConnection) server.openConnection();
-//            client.connect();
-//
-//            // Check for valid response code from the server
-//            int status = client.getResponseCode();
-//            is = (status == HttpURLConnection.HTTP_OK)
-//                    ? client.getInputStream() : client.getErrorStream();
-//
-//            // Build the response or error as a string
-//            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-//            StringBuilder sb = new StringBuilder();
-//            for (String temp; ((temp = br.readLine()) != null); ) {
-//                sb.append(temp);
-//            }
-//
-//            return sb.toString();
-//        } finally {
-//            if (is != null) {
-//                is.close();
-//            }
-//            if (client != null) {
-//                client.disconnect();
-//            }
-//        }
-//    }
-
 
     /**
      * Manual force Android to perform a sync with our SyncAdapter.

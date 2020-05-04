@@ -23,4 +23,8 @@ public class FlixPreferences {
         return prefs.getString(keyForSortOrder, defaultSortOrder);
     }
 
+    public static boolean isSortPopular(Context context) {
+        return getPreferredSortOrder(context).equals(context.getString(R.string.pref_sort_order_popular));
+    }
+
 }

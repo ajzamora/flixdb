@@ -34,6 +34,7 @@ public final class MovieContract {
         public static final String COLUMN_MOVIE_THUMBNAIL = "thumbnail";
         public static final String COLUMN_MOVIE_BACKDROP = "backdrop";
         public static final String COLUMN_MOVIE_PLOT = "plot";
+        public static final String COLUMN_MOVIE_POPULARITY = "popularity";
         public static final String COLUMN_MOVIE_RATING = "rating";
         public static final String COLUMN_MOVIE_RELEASE_DATE = "release_date";
         public static final String COLUMN_MOVIE_TRAILERS_ID = "trailers_id";
