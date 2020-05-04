@@ -1,6 +1,7 @@
 package com.ajzamora.flixdb.adapters;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ajzamora.flixdb.R;
 import com.ajzamora.flixdb.models.Movie;
-import com.ajzamora.flixdb.models.Review;
-import com.ajzamora.flixdb.models.Trailer;
+import com.ajzamora.flixdb.models.MovieContract.MovieEntry;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
-    private List<Movie> mMovies;
+    private Cursor mMoviesCursor;
     final private RecyclerItemClickListener mOnClickListener;
 
     public MovieAdapter(RecyclerItemClickListener listener) {
-        this(new ArrayList<Movie>(), listener);
+        this(null, listener);
     }
 
-    public MovieAdapter(List<Movie> movies, RecyclerItemClickListener listener) {
-        mMovies = movies;
+    public MovieAdapter(Cursor moviesCursor, RecyclerItemClickListener listener) {
+        mMoviesCursor = moviesCursor;
         mOnClickListener = listener;
     }
 
@@ -54,7 +51,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public int getItemCount() {
-        return mMovies.size();
+        return (mMoviesCursor == null) ? 0 : mMoviesCursor.getCount();
     }
 
     public final class MovieViewHolder extends RecyclerView.ViewHolder
@@ -72,8 +69,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         void bind(int position) {
             Movie currentMovie = getMovieAt(position);
+//            Log.v("asdf", currentMovie.getThumbnailUrl());
             Picasso.get()
                     .load(currentMovie.getThumbnailUrl())
+                    .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                    .error(R.drawable.ic_sad)
                     .into(mItemMovieIV);
             int trailerCount = 0, reviewCount = 0;
             if (!(currentMovie.getTrailers() == null || currentMovie.getTrailers().isEmpty())) {
@@ -93,28 +93,74 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
     }
 
-    public void setTrailerListAt(int position, List<Trailer> trailers) {
-        Movie currentMovie = mMovies.get(position);
-        currentMovie.setTrailers(trailers);
-        notifyItemChanged(position);
-    }
-
-    public void setReviewListAt(int position, List<Review> reviews) {
-        Movie currentMovie = mMovies.get(position);
-        currentMovie.setReviews(reviews);
-        notifyItemChanged(position);
-    }
-
-    public void setData(List<Movie> movies) {
-        mMovies = movies;
-        notifyDataSetChanged();
-    }
+//    public void setTrailerListAt(int position, List<Trailer> trailers) {
+//        Movie currentMovie = getMovieAt(position);
+//        currentMovie.setTrailers(trailers);
+//        notifyItemChanged(position);
+//    }
+//
+//    public void setReviewListAt(int position, List<Review> reviews) {
+//        Movie currentMovie = getMovieAt(position);
+//        currentMovie.setReviews(reviews);
+//        notifyItemChanged(position);
+//    }
 
     public Movie getMovieAt(int position) {
-        return mMovies.get(position);
+//        return mMoviesCursor.get(position);
+        if (position < 0 || position >= getItemCount()) {
+            throw new IllegalArgumentException("Item position is out of adapter's range");
+        } else if (mMoviesCursor.moveToPosition(position)) {
+            // Find the columns of pet attributes that we're interested in
+            return parseMovie(mMoviesCursor);
+        }
+        return null;
     }
 
-    public void clear() {
-        setData(new ArrayList<Movie>());
+    public Cursor swapCursor(Cursor cursor) {
+        if (mMoviesCursor == cursor) {
+            return null;
+        }
+        Cursor oldCursor = mMoviesCursor;
+        mMoviesCursor = cursor;
+        if (cursor != null) {
+            notifyDataSetChanged();
+        }
+        return oldCursor;
+    }
+
+    public Cursor getCursor() {
+        return mMoviesCursor;
+    }
+
+    private Movie parseMovie(Cursor movieCursor) {
+        int idColIdx = movieCursor.getColumnIndex(MovieEntry._ID);
+        int titleColIdx = movieCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_TITLE);
+        int plotColIdx = movieCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_PLOT);
+        int popColIdx = movieCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_POPULARITY);
+        int thumbnailColIdx = movieCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_THUMBNAIL);
+        int backdropColIdx = movieCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_BACKDROP);
+        int rateColIdx = movieCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_RATING);
+        int dateColIdx = movieCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_RELEASE_DATE);
+
+        // Extract out the value from the Cursor for the given column index
+        String id = movieCursor.getString(idColIdx);
+        String title = movieCursor.getString(titleColIdx);
+        String plot = movieCursor.getString(plotColIdx);
+        String popularity = movieCursor.getString(popColIdx);
+        String thumbnail = movieCursor.getString(thumbnailColIdx);
+        String backdrop = movieCursor.getString(backdropColIdx);
+        String rate = movieCursor.getString(rateColIdx);
+        String date = movieCursor.getString(dateColIdx);
+
+        return new Movie.Builder()
+                .id(id)
+                .title(title)
+                .plot(plot)
+                .popularity(popularity)
+                .thumbnail(thumbnail)
+                .backdrop(backdrop)
+                .releaseDate(date)
+                .rating(rate)
+                .build();
     }
 }
