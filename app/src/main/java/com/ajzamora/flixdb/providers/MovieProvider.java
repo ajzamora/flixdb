@@ -1,8 +1,11 @@
 package com.ajzamora.flixdb.providers;
 
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,10 +19,13 @@ import com.ajzamora.flixdb.models.MovieContract;
 import com.ajzamora.flixdb.models.MovieContract.MovieEntry;
 import com.ajzamora.flixdb.utils.MovieClient;
 
+import java.util.ArrayList;
+
 public class MovieProvider extends ContentProvider {
 
     public static final String LOG_TAG = MovieProvider.class.getSimpleName();
     private MovieClient mMovieOpenHelper;
+    static volatile boolean batchFlag = false;
 
     private static final int MOVIES = 100;
     private static final int MOVIE_ID = 101;
@@ -61,6 +67,7 @@ public class MovieProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
+        assert getContext() != null;
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
@@ -69,12 +76,19 @@ public class MovieProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         final int match = sUriMatcher.match(uri);
+        Uri returnUri;
+        long _id;
         switch (match) {
             case MOVIES:
-                return saveMovie(uri, contentValues);
+                _id = saveMovie(uri, contentValues);
+                returnUri = ContentUris.withAppendedId(uri, _id);
+                break;
             default:
                 throw new IllegalArgumentException("Insertion is not supported for " + uri);
         }
+        assert getContext() != null;
+        if (!batchFlag) getContext().getContentResolver().notifyChange(uri, null);
+        return returnUri;
     }
 
     @Override
@@ -113,14 +127,11 @@ public class MovieProvider extends ContentProvider {
         }
 
 
-        if (rowsDeleted != 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
-
+        if (!batchFlag && rowsDeleted != 0) getContext().getContentResolver().notifyChange(uri, null);
         return rowsDeleted;
     }
 
-    private Uri saveMovie(Uri uri, ContentValues contentValues) {
+    private long saveMovie(Uri uri, ContentValues contentValues) {
 //        TODO: Sanity Check
         SQLiteDatabase movieWriteDb = mMovieOpenHelper.getWritableDatabase();
 
@@ -128,12 +139,9 @@ public class MovieProvider extends ContentProvider {
         Log.v(LOG_TAG, "sync insert " + id);
         if (id == -1) {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
-            return null;
         }
 
-        getContext().getContentResolver().notifyChange(uri, null);
-
-        return ContentUris.withAppendedId(uri, id);
+        return id;
     }
 
     private int updateMovie(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
@@ -143,7 +151,7 @@ public class MovieProvider extends ContentProvider {
 
         int count = movieWriteDb.update(MovieEntry.TABLE_NAME, values, selection, selectionArgs);
 
-        if (count != 0) getContext().getContentResolver().notifyChange(uri, null);
+        if (!batchFlag && count != 0) getContext().getContentResolver().notifyChange(uri, null);
 
         return count;
     }
@@ -159,6 +167,28 @@ public class MovieProvider extends ContentProvider {
                 return MovieEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+        }
+    }
+
+    @Override
+    public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations)
+            throws OperationApplicationException {
+
+        SQLiteDatabase movieReadDb = mMovieOpenHelper.getReadableDatabase();
+        movieReadDb.beginTransaction();
+        try {
+            batchFlag = true;
+            final int numOperations = operations.size();
+            final ContentProviderResult[] results = new ContentProviderResult[numOperations];
+            for (int i = 0; i < numOperations; i++) {
+                results[i] = operations.get(i).apply(this, results, i);
+            }
+            movieReadDb.setTransactionSuccessful();
+            return results;
+        } finally {
+            movieReadDb.endTransaction();
+            batchFlag = false;
+            Log.v("apply", "batch");
         }
     }
 }
