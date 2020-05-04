@@ -37,4 +37,7 @@
     <string name="detail_date_label">Release Date: <xliff:g id="rate" example="2020-03-05">%s</xliff:g></string>
     <string name="detail_trailer_label">Trailers: </string>
     <string name="detail_review_label">Reviews: </string>
+
+    <string name="sync_account_type">"com.ajzamora.syncaccount"</string>
+    <string name="content_authority">com.ajzamora.flixdb</string>
 </resources>

@@ -26,6 +26,15 @@
             android:exported="false"
             android:syncable="true"/>
 
+        <service android:name=".auth.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator"/>
+        </service>
+
         <activity
             android:name=".DetailActivity"
             android:label="@string/activity_details_label"
