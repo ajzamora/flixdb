@@ -131,12 +131,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
         // Compare the hash table of network entries to all the local entries
         Log.i(TAG, "Fetching local entries...");
-        Cursor moviesCursor = mContentResolver.query(MovieEntry.CONTENT_URI, null, null, null, null, null);
+        String sortType = "DESC";
+        String sortOrder = (FlixPreferences.isSortPopular(mContext) ? MovieEntry.COLUMN_MOVIE_POPULARITY : MovieEntry.COLUMN_MOVIE_RATING).concat(" ").concat(sortType);
+        Cursor moviesCursor = mContentResolver.query(MovieEntry.CONTENT_URI, null, null, null, sortOrder, null);
         assert moviesCursor != null;
-
         while (moviesCursor.moveToNext()) {
             syncResult.stats.numEntries++;
-            Movie found;
 
             int idColIdx = moviesCursor.getColumnIndex(MovieEntry._ID);
             int titleColIdx = moviesCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_TITLE);
@@ -158,10 +158,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             String date = moviesCursor.getString(dateColIdx);
             //        List<Trailer> trailers;
             //        List<Review> reviews;
-
+            
             // Try to retrieve the local entry from network entries
-            found = networkEntries.get(id);
+            Movie found = networkEntries.get(id);
             if (found != null) {
+                Log.v("found", found.getId() + networkEntries.get(id));
                 // The entry exists, remove from hash table to prevent re-inserting it
                 networkEntries.remove(id);
 
@@ -203,6 +204,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         for (Movie movie : networkEntries.values()) {
             Log.i(TAG, "Scheduling insert: " + movie.getTitle());
             batch.add(ContentProviderOperation.newInsert(MovieEntry.CONTENT_URI)
+                    .withValue(MovieEntry._ID, movie.getId())
                     .withValue(MovieEntry.COLUMN_MOVIE_TITLE, movie.getTitle())
                     .withValue(MovieEntry.COLUMN_MOVIE_PLOT, movie.getPlot())
                     .withValue(MovieEntry.COLUMN_MOVIE_POPULARITY, movie.getPopularity())
@@ -220,6 +222,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         mContentResolver.notifyChange(MovieEntry.CONTENT_URI, // URI where data was modified
                 null, // No local observer
                 false); // IMPORTANT: Do not sync to network
+        Log.v("batch sync stats", syncResult.stats.toString());
     }
 
     /**
