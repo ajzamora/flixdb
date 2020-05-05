@@ -17,6 +17,7 @@ public class Movie implements Parcelable {
     private String mPopularity;
     private String mRating;
     private String mReleaseDate;
+    private boolean mIsFavorited;
     private List<Trailer> mTrailers;
     private List<Review> mReviews;
 
@@ -30,6 +31,7 @@ public class Movie implements Parcelable {
         mPopularity = b.popularity;
         mRating = b.rating;
         mReleaseDate = b.releaseDate;
+        mIsFavorited = b.isFavorited;
         mTrailers = b.trailers;
         mReviews = b.reviews;
     }
@@ -43,6 +45,7 @@ public class Movie implements Parcelable {
         private String popularity;
         private String rating;
         private String releaseDate;
+        private boolean isFavorited;
         private List<Trailer> trailers;
         private List<Review> reviews;
 
@@ -87,6 +90,11 @@ public class Movie implements Parcelable {
 
         public Builder releaseDate(String releaseDate) {
             this.releaseDate = releaseDate;
+            return this;
+        }
+
+        public Builder isFavorited(boolean isFavorited) {
+            this.isFavorited = isFavorited;
             return this;
         }
 
@@ -159,6 +167,12 @@ public class Movie implements Parcelable {
         return mReleaseDate;
     }
 
+    public void setIsFavorited(boolean isFavorited) { mIsFavorited = isFavorited; }
+
+    public boolean getIsFavorited() {
+        return mIsFavorited;
+    }
+
     public void setTrailers(List<Trailer> trailers) {
         mTrailers = trailers;
     }
@@ -198,6 +212,7 @@ public class Movie implements Parcelable {
         mPopularity = in.readString();
         mRating = in.readString();
         mReleaseDate = in.readString();
+        mIsFavorited = in.readInt() == 1;
         mTrailers = in.createTypedArrayList(Trailer.CREATOR);
         mReviews = in.createTypedArrayList(Review.CREATOR);
     }
@@ -229,6 +244,7 @@ public class Movie implements Parcelable {
         dest.writeString(mPopularity);
         dest.writeString(mRating);
         dest.writeString(mReleaseDate);
+        dest.writeInt(mIsFavorited ? 1 : 0);
         dest.writeTypedList(mTrailers);
         dest.writeTypedList(mReviews);
     }

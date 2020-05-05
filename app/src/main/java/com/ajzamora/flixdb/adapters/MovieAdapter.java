@@ -141,6 +141,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         int backdropColIdx = movieCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_BACKDROP);
         int rateColIdx = movieCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_RATING);
         int dateColIdx = movieCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_RELEASE_DATE);
+        int isFavColIdx = mMoviesCursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_IS_FAVORITED);
 
         // Extract out the value from the Cursor for the given column index
         String id = movieCursor.getString(idColIdx);
@@ -151,6 +152,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         String backdrop = movieCursor.getString(backdropColIdx);
         String rate = movieCursor.getString(rateColIdx);
         String date = movieCursor.getString(dateColIdx);
+        boolean isFavorited = movieCursor.getInt(isFavColIdx) == 1;
 
         return new Movie.Builder()
                 .id(id)
@@ -161,6 +163,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .backdrop(backdrop)
                 .releaseDate(date)
                 .rating(rate)
+                .isFavorited(isFavorited)
                 .build();
     }
 }
