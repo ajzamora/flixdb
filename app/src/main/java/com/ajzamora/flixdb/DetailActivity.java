@@ -1,13 +1,9 @@
 package com.ajzamora.flixdb;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -166,13 +162,14 @@ public class DetailActivity extends AppCompatActivity
             }
         }
 
-        if (isOnline()) {
+        if (NetworkUtils.isOnline(this)) {
             LoaderManager loaderManager = getSupportLoaderManager();
             loaderManager.initLoader(TRAILER_LOADER_ID, null, trailerLoaderCallbacks);
             loaderManager.initLoader(REVIEW_LOADER_ID, null, reviewLoaderCallbacks);
         } else {
             // no internet connection
             setEmptyTrailerState(R.string.empty_state_no_internet);
+            setEmptyReviewState(R.string.empty_state_no_internet);
         }
     }
 
@@ -266,17 +263,8 @@ public class DetailActivity extends AppCompatActivity
         startActivity(playVideo);
     }
 
-    private boolean isOnline() {
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected());
-    }
-
     public void onFavClick(View view) {
-        Log.v("fav init", " " + mMovie.getIsFavorited());
         mMovie.setIsFavorited(!mMovie.getIsFavorited());
-        Log.v("fav after", " " + mMovie.getIsFavorited());
         Picasso.get()
                 .load(mMovie.getIsFavorited()? R.drawable.favicon_on_white_48 : R.drawable.favicon_off_white_48)
                 .into(mFaviconIV);

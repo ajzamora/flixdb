@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/textview_item_review_author"
-        android:textColor="@android:color/holo_red_light"
+        android:textColor="@color/colorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

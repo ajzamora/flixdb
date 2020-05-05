@@ -150,10 +150,11 @@ public final class NetworkUtils {
                 line = bufferedReader.readLine();
             }
         }
+        inputStream.close();
         return output.toString();
     }
 
-    private boolean isOnline(Activity activity) {
+    public static boolean isOnline(Activity activity) {
         ConnectivityManager connMgr = (ConnectivityManager)
                 activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
