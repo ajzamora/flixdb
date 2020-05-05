@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/all_margin_xsmall"
+    android:paddingTop="@dimen/all_padding_xsmall"
+    android:paddingBottom="@dimen/all_padding_xsmall"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/iv_thumb_item_favorites"
+        android:layout_width="@dimen/detail_thumbnail_width"
+        android:layout_height="@dimen/detail_thumbnail_height"
+        android:adjustViewBounds="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/detail_thumbnail_margin_start"
+        android:layout_marginLeft="@dimen/detail_thumbnail_margin_left"
+        android:src="@android:drawable/gallery_thumb" />
+
+    <TextView
+        android:id="@+id/tv_title_item_favorites"
+        android:layout_width="@dimen/all_width_none"
+        android:layout_height="wrap_content"
+        android:maxLines="@integer/detail_title_maxlines"
+        android:paddingStart="@dimen/detail_title_padding_start"
+        android:paddingLeft="@dimen/detail_title_padding_left"
+        android:paddingEnd="@dimen/detail_title_padding_right"
+        android:paddingRight="@dimen/all_padding_large"
+        android:layout_marginRight="@dimen/all_padding_large"
+        android:textSize="@dimen/detail_title_text_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_date_item_favorites"
+        app:layout_constraintStart_toEndOf="@id/iv_thumb_item_favorites"
+        app:layout_constraintEnd_toEndOf="@id/iv_del_item_favorites"
+        android:text="Title" />
+
+    <ImageView
+        android:id="@+id/iv_dateico_favorites"
+        android:layout_width="@dimen/detail_dateico_width"
+        android:layout_height="@dimen/detail_dateico_height"
+        android:layout_marginStart="@dimen/detail_title_padding_start"
+        android:layout_marginLeft="@dimen/detail_title_padding_left"
+        android:src="@android:drawable/ic_menu_my_calendar"
+        app:layout_constraintStart_toEndOf="@id/iv_thumb_item_favorites"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_item_favorites" />
+
+    <TextView
+        android:id="@+id/tv_date_item_favorites"
+        android:layout_width="@dimen/all_width_none"
+        android:layout_height="@dimen/detail_date_height"
+        android:text="@string/detail_date_label"
+        app:layout_constraintStart_toEndOf="@id/iv_dateico_favorites"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_item_favorites"
+        app:layout_constraintBottom_toTopOf="@id/tv_rate_item_favorites"
+        />
+
+    <ImageView
+        android:id="@+id/iv_ratingico_favorites"
+        android:layout_width="@dimen/detail_ratingico_width"
+        android:layout_height="@dimen/detail_ratingico_height"
+        android:layout_marginStart="@dimen/detail_title_padding_start"
+        android:layout_marginLeft="@dimen/detail_title_padding_left"
+        android:src="@android:drawable/btn_star"
+        app:layout_constraintEnd_toStartOf="@id/tv_rate_item_favorites"
+        app:layout_constraintStart_toEndOf="@id/iv_thumb_item_favorites"
+        app:layout_constraintTop_toBottomOf="@id/tv_date_item_favorites" />
+
+    <TextView
+        android:id="@+id/tv_rate_item_favorites"
+        android:layout_width="@dimen/all_width_none"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/detail_rating_text_size"
+        app:layout_constraintStart_toEndOf="@id/iv_ratingico_favorites"
+        app:layout_constraintTop_toBottomOf="@id/tv_date_item_favorites"
+        />
+
+    <ImageView
+        android:id="@+id/iv_del_item_favorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/colorRed"
+        android:visibility="invisible"
+        android:layout_marginRight="@dimen/all_margin_small"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

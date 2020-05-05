@@ -285,6 +285,5 @@ public class DetailActivity extends AppCompatActivity
         Uri updateUri = MovieEntry.CONTENT_URI.buildUpon().appendEncodedPath(mMovie.getId()).build();
         long id = getContentResolver().update(updateUri , contentValues, null, null);
         Log.v("update fav", updateUri + " " + id);
-
     }
 }

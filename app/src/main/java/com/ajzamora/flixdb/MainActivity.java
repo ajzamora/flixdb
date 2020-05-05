@@ -132,12 +132,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
-            startActivity(startSettingsActivity);
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+                startActivity(startSettingsActivity);
+                return true;
+            case R.id.action_favorites:
+                Intent startFavoritesActivity = new Intent(this, FavoritesActivity.class);
+                startActivity(startFavoritesActivity);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+
     }
 
     @Override
@@ -229,14 +236,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void launchDetailActivity(int moviePosition) {
-//        Movie currentMovie = mMovieAdapter.getMovieAt(moviePosition);
-//        Intent intent = new Intent(this, DetailActivity.class);
-//        intent.putExtra(MainActivity.EXTRA_MOVIE_POS, moviePosition);
-//        intent.putExtra(DetailActivity.EXTRA_MOVIE, currentMovie);
-//        startActivityForResult(intent, DetailActivity.REQUEST_CODE);
+        Movie currentMovie = mMovieAdapter.getMovieAt(moviePosition);
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(MainActivity.EXTRA_MOVIE_POS, moviePosition);
+        intent.putExtra(DetailActivity.EXTRA_MOVIE, currentMovie);
+        startActivityForResult(intent, DetailActivity.REQUEST_CODE);
         // TODO: delete temporary test sync
         // Perform a manual sync by calling this:
-        SyncAdapter.performSync();
+//        SyncAdapter.performSync();
     }
 
     @Override
