@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +34,7 @@ public class FavoritesActivity extends AppCompatActivity implements
     private static final int FAV_LOADER_ID = 4;
     private FavoriteAdapter mFavAdapter;
     private RecyclerView mFavRV;
+    private TextView mEmptyStateTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,7 @@ public class FavoritesActivity extends AppCompatActivity implements
 
         mFavAdapter = new FavoriteAdapter( this);
         mFavRV.setAdapter(mFavAdapter);
+        mEmptyStateTV = findViewById(R.id.tv_empty_icon_label_favorites);
     }
 
     @Override
@@ -112,6 +114,8 @@ public class FavoritesActivity extends AppCompatActivity implements
         contentValues.put(MovieEntry.COLUMN_MOVIE_IS_FAVORITED, currentMovie.getIsFavorited());
         Uri updateUri = MovieEntry.CONTENT_URI.buildUpon().appendEncodedPath(currentMovie.getId()).build();
         getContentResolver().update(updateUri, contentValues, null, null);
+        mFavAdapter.swapCursor(null);
+        mFavAdapter.notifyDataSetChanged();
     }
 
     @NonNull
@@ -132,7 +136,12 @@ public class FavoritesActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        if (data.getCount() > 0) mFavAdapter.swapCursor(data);
+        if (data.getCount() > 0) {
+            mFavAdapter.swapCursor(data);
+            mEmptyStateTV.setVisibility(View.INVISIBLE);
+        } else {
+            mEmptyStateTV.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

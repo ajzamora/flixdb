@@ -31,6 +31,7 @@
     <string name="empty_state_api_invalid">Invalid API KEY</string>
     <string name="empty_state_api_instructions">Go to Settings -> API KEY (Developer Options)</string>
     <string name="empty_state_no_movies">No Movies Found</string>
+    <string name="empty_state_no_favmovies">No Favorites Found</string>
     <string name="empty_state_icon_panda">Here\'s a panda for you!</string>
     <string name="empty_state_icon_sad">:(</string>
     <string name="empty_state_no_preview">No Available Preview</string>
