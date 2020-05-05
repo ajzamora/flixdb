@@ -80,11 +80,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
          */
 
         final String apiKey = FlixPreferences.getPreferredAPI(mContext);
-        final String sortOrder = FlixPreferences.getPreferredSortOrder(mContext);
         if (TextUtils.isEmpty(apiKey)) return;
 
         Log.w(TAG, "Starting synchronization...");
-        URL movieRequestUrl = NetworkUtils.buildUrl(apiKey, sortOrder);
+        URL movieRequestUrl = NetworkUtils.buildUrl(apiKey);
 
         List<Movie> simpleJsonMovieData = null;
         String jsonMovieResponse = null;
@@ -102,6 +101,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             syncResult.stats.numIoExceptions++;
         } catch (JSONException ex) {
             Log.e(TAG, "Error JSON synchronizing!", ex);
+            mContentResolver.delete(MovieEntry.CONTENT_URI, null, null);
             syncResult.stats.numParseExceptions++;
         } catch (RemoteException | OperationApplicationException ex) {
             Log.e(TAG, "Error RemOp synchronizing!", ex);

@@ -14,7 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ajzamora.flixdb.R;
 import com.ajzamora.flixdb.models.Movie;
 import com.ajzamora.flixdb.models.MovieContract.MovieEntry;
+import com.ajzamora.flixdb.models.Review;
+import com.ajzamora.flixdb.models.Trailer;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private Cursor mMoviesCursor;
@@ -93,17 +97,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
     }
 
-//    public void setTrailerListAt(int position, List<Trailer> trailers) {
-//        Movie currentMovie = getMovieAt(position);
-//        currentMovie.setTrailers(trailers);
-//        notifyItemChanged(position);
-//    }
-//
-//    public void setReviewListAt(int position, List<Review> reviews) {
-//        Movie currentMovie = getMovieAt(position);
-//        currentMovie.setReviews(reviews);
-//        notifyItemChanged(position);
-//    }
+    public void setTrailerListAt(int position, List<Trailer> trailers) {
+        Movie currentMovie = getMovieAt(position);
+        currentMovie.setTrailers(trailers);
+        notifyItemChanged(position);
+    }
+
+    public void setReviewListAt(int position, List<Review> reviews) {
+        Movie currentMovie = getMovieAt(position);
+        currentMovie.setReviews(reviews);
+        notifyItemChanged(position);
+    }
 
     public Movie getMovieAt(int position) {
 //        return mMoviesCursor.get(position);
@@ -126,6 +130,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             notifyDataSetChanged();
         }
         return oldCursor;
+    }
+
+    public void clear() {
+        mMoviesCursor = null;
+        notifyDataSetChanged();
     }
 
     public Cursor getCursor() {

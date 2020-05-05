@@ -1,12 +1,9 @@
 package com.ajzamora.flixdb;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +18,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -38,7 +34,9 @@ import com.ajzamora.flixdb.models.Trailer;
 import com.ajzamora.flixdb.sync.SyncAdapter;
 import com.ajzamora.flixdb.utils.AccountUtils;
 import com.ajzamora.flixdb.utils.LayoutUtils;
+import com.ajzamora.flixdb.utils.NetworkUtils;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     private TextView mEmptyStateTV;
     private ImageView mEmptyIconIV;
     private TextView mEmptyIconLabelTV;
-    private ContentLoadingProgressBar mIndicatorPB;
+    ;
     private MovieObserver movieObserver;
 
     /**
@@ -74,8 +72,6 @@ public class MainActivity extends AppCompatActivity
             refreshMovies();
         }
     }
-
-    private static boolean sharedPreferenceFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +91,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void initUI() {
-        mIndicatorPB = findViewById(R.id.pb_indicator_main);
         mEmptyStateTV = findViewById(R.id.tv_empty_main);
         mEmptyIconIV = findViewById(R.id.iv_empty_icon_main);
         mEmptyIconLabelTV = findViewById(R.id.tv_empty_icon_label_main);
@@ -149,7 +144,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        sharedPreferenceFlag = true;
+        if (key.equals(getString(R.string.pref_api_key))) {
+            SyncAdapter.performSync();
+        } else {
+            mMovieAdapter.clear();
+            getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+        }
     }
 
     @Override
@@ -157,15 +157,6 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
         // Register the observer at the start of our activity
         getContentResolver().registerContentObserver(MovieEntry.CONTENT_URI, true, movieObserver);
-
-        if (sharedPreferenceFlag && isOnline()) {
-            Log.i(LOG_TAG, "onStart: preferences were updated");
-            mMovieAdapter.swapCursor(null);
-            hideEmptyState();
-            mIndicatorPB.show();
-            getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
-            sharedPreferenceFlag = false;
-        }
     }
 
     @Override
@@ -202,25 +193,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         Log.v(LOG_TAG, "onLoadFinished");
-
-        mIndicatorPB.hide();
         if (data.getCount() > 0) {
             mMovieAdapter.swapCursor(data);
-            Log.v(LOG_TAG, "onLoadFinished: if" + data.getCount() + " " + mMovieAdapter.getItemCount());
-            StringBuilder sb = new StringBuilder();
-            int count = data.getCount();
-            while (data.moveToNext()) {
-                int titleColIdx = data.getColumnIndex(MovieEntry.COLUMN_MOVIE_TITLE);
-                int rateColIdx = data.getColumnIndex(MovieEntry.COLUMN_MOVIE_RATING);
-                String title = data.getString(titleColIdx);
-                String rate = data.getString(rateColIdx);
-                sb.append(title).append(" ").append(rate).append("\n");
-            }
-            sb.append("total count: ").append(count);
-            Log.v(LOG_TAG, sb.toString());
+            hideEmptyState();
         } else {
-            setEmptyState(R.string.empty_state_no_movies, R.drawable.ic_sad, R.string.empty_state_icon_sad);
-            Log.v(LOG_TAG, "onLoadFinished: else");
+            if (NetworkUtils.getLastStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED)
+                setEmptyState(R.string.empty_state_api_invalid, R.drawable.ic_smart_key, R.string.empty_state_api_instructions);
+            else
+                setEmptyState(R.string.empty_state_no_movies, R.drawable.ic_sad, R.string.empty_state_icon_sad);
         }
     }
 
@@ -241,9 +221,6 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(MainActivity.EXTRA_MOVIE_POS, moviePosition);
         intent.putExtra(DetailActivity.EXTRA_MOVIE, currentMovie);
         startActivityForResult(intent, DetailActivity.REQUEST_CODE);
-        // TODO: delete temporary test sync
-        // Perform a manual sync by calling this:
-//        SyncAdapter.performSync();
     }
 
     @Override
@@ -252,21 +229,15 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == DetailActivity.REQUEST_CODE && resultCode == RESULT_OK) {
             int moviePosition = data.getIntExtra(MainActivity.EXTRA_MOVIE_POS, MainActivity.EXTRA_MOVIE_POS_DEFAULT);
             List<Trailer> trailers = data.getParcelableArrayListExtra(DetailActivity.EXTRA_TRAILERS);
-//            mMovieAdapter.setTrailerListAt(moviePosition, trailers);
+            mMovieAdapter.setTrailerListAt(moviePosition, trailers);
 
             List<Review> reviews = data.getParcelableArrayListExtra(DetailActivity.EXTRA_REVIEWS);
-//            mMovieAdapter.setReviewListAt(moviePosition, reviews);
+            mMovieAdapter.setReviewListAt(moviePosition, reviews);
         }
     }
 
-    private boolean isOnline() {
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected());
-    }
-
     private void refreshMovies() {
-        Log.i(getClass().getName(), "Movies data has changed!");
+        mMovieAdapter.clear();
+        getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
     }
 }

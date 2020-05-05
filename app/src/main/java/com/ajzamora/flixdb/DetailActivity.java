@@ -67,7 +67,7 @@ public class DetailActivity extends AppCompatActivity
             if (trailers != null && !trailers.isEmpty()) {
                 mTrailerAdapter.setData(trailers);
             } else {
-                if (NetworkUtils.STATUS_CODE == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                if (NetworkUtils.getLastStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     // Invalid Api Key
                     setEmptyTrailerState(R.string.empty_state_api_invalid);
                 } else {
@@ -98,7 +98,7 @@ public class DetailActivity extends AppCompatActivity
             if (reviews != null && !reviews.isEmpty()) {
                 mReviewAdapter.setData(reviews);
             } else {
-                if (NetworkUtils.STATUS_CODE == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                if (NetworkUtils.getLastStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     // Invalid Api Key
                     setEmptyReviewState(R.string.empty_state_api_invalid);
                 } else {

@@ -1,7 +1,14 @@
 package com.ajzamora.flixdb.utils;
 
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
+
+import com.ajzamora.flixdb.models.MovieContract;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +23,8 @@ public final class NetworkUtils {
     private static final String LOG_TAG = NetworkUtils.class.getSimpleName();
     private static final String TMDB_BASE_URL = "https://api.themoviedb.org/3";
     private static final String TMDB_MOVIE_URL = TMDB_BASE_URL.concat("/movie");
-    public static int STATUS_CODE = -1;
+    private static final String TMDB_DEFAULT_ORDER = "popular";
+    private static volatile int STATUS_CODE = -1;
 
     final static String API_PARAM = "api_key";
 
@@ -81,9 +89,9 @@ public final class NetworkUtils {
         return url;
     }
 
-    public static URL buildUrl(String api, String sortOrder) {
+    public static URL buildUrl(String api) {
         Uri builtUri = Uri.parse(TMDB_MOVIE_URL).buildUpon()
-                .appendPath(sortOrder)
+                .appendPath(TMDB_DEFAULT_ORDER)
                 .appendQueryParameter(API_PARAM, api)
                 .build();
 
@@ -127,6 +135,10 @@ public final class NetworkUtils {
         return jsonResponse;
     }
 
+    public static int getLastStatusCode() {
+        return STATUS_CODE;
+    }
+
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
@@ -139,5 +151,12 @@ public final class NetworkUtils {
             }
         }
         return output.toString();
+    }
+
+    private boolean isOnline(Activity activity) {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 }
