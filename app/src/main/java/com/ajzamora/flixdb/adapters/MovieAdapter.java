@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,11 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ajzamora.flixdb.R;
 import com.ajzamora.flixdb.models.Movie;
 import com.ajzamora.flixdb.models.MovieContract.MovieEntry;
-import com.ajzamora.flixdb.models.Review;
-import com.ajzamora.flixdb.models.Trailer;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private Cursor mMoviesCursor;
@@ -61,34 +56,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public final class MovieViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         ImageView mItemMovieIV;
-        // TODO: delete after testing
-        TextView mItemMovieTrailerCountTV;
 
         MovieViewHolder(View itemView) {
             super(itemView);
             mItemMovieIV = itemView.findViewById(R.id.imageview_item_movie);
-            mItemMovieTrailerCountTV = itemView.findViewById(R.id.textview_item_trailer_count);
             itemView.setOnClickListener(this);
         }
 
         void bind(int position) {
             Movie currentMovie = getMovieAt(position);
-//            Log.v("asdf", currentMovie.getThumbnailUrl());
             Picasso.get()
                     .load(currentMovie.getThumbnailUrl())
                     .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                     .error(R.drawable.ic_sad)
                     .into(mItemMovieIV);
-            int trailerCount = 0, reviewCount = 0;
-            if (!(currentMovie.getTrailers() == null || currentMovie.getTrailers().isEmpty())) {
-                trailerCount = currentMovie.getTrailers().size();
-            }
-
-            if (!(currentMovie.getReviews() == null || currentMovie.getReviews().isEmpty())) {
-                reviewCount = currentMovie.getReviews().size();
-            }
-            mItemMovieTrailerCountTV.setText(String.valueOf(trailerCount));
-            mItemMovieTrailerCountTV.append(" - " + (reviewCount));
         }
 
         @Override
@@ -97,20 +78,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
     }
 
-    public void setTrailerListAt(int position, List<Trailer> trailers) {
-        Movie currentMovie = getMovieAt(position);
-        currentMovie.setTrailers(trailers);
-        notifyItemChanged(position);
-    }
-
-    public void setReviewListAt(int position, List<Review> reviews) {
-        Movie currentMovie = getMovieAt(position);
-        currentMovie.setReviews(reviews);
-        notifyItemChanged(position);
-    }
-
     public Movie getMovieAt(int position) {
-//        return mMoviesCursor.get(position);
         if (position < 0 || position >= getItemCount()) {
             throw new IllegalArgumentException("Item position is out of adapter's range");
         } else if (mMoviesCursor.moveToPosition(position)) {
@@ -135,10 +103,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void clear() {
         mMoviesCursor = null;
         notifyDataSetChanged();
-    }
-
-    public Cursor getCursor() {
-        return mMoviesCursor;
     }
 
     private Movie parseMovie(Cursor movieCursor) {

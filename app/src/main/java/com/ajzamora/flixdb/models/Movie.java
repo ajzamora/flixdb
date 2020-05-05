@@ -3,8 +3,6 @@ package com.ajzamora.flixdb.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
-
 public class Movie implements Parcelable {
     private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w185";
     private static final String IMAGE_BACKDROP_URL = "https://image.tmdb.org/t/p/w500";
@@ -18,8 +16,6 @@ public class Movie implements Parcelable {
     private String mRating;
     private String mReleaseDate;
     private boolean mIsFavorited;
-    private List<Trailer> mTrailers;
-    private List<Review> mReviews;
 
 
     private Movie(Builder b) {
@@ -32,8 +28,6 @@ public class Movie implements Parcelable {
         mRating = b.rating;
         mReleaseDate = b.releaseDate;
         mIsFavorited = b.isFavorited;
-        mTrailers = b.trailers;
-        mReviews = b.reviews;
     }
 
     public static final class Builder {
@@ -46,8 +40,6 @@ public class Movie implements Parcelable {
         private String rating;
         private String releaseDate;
         private boolean isFavorited;
-        private List<Trailer> trailers;
-        private List<Review> reviews;
 
         public Builder() {
 
@@ -95,16 +87,6 @@ public class Movie implements Parcelable {
 
         public Builder isFavorited(boolean isFavorited) {
             this.isFavorited = isFavorited;
-            return this;
-        }
-
-        public Builder trailers(List<Trailer> trailers) {
-            this.trailers = trailers;
-            return this;
-        }
-
-        public Builder reviews(List<Review> reviews) {
-            this.reviews = reviews;
             return this;
         }
 
@@ -167,26 +149,12 @@ public class Movie implements Parcelable {
         return mReleaseDate;
     }
 
-    public void setIsFavorited(boolean isFavorited) { mIsFavorited = isFavorited; }
+    public void setIsFavorited(boolean isFavorited) {
+        mIsFavorited = isFavorited;
+    }
 
     public boolean getIsFavorited() {
         return mIsFavorited;
-    }
-
-    public void setTrailers(List<Trailer> trailers) {
-        mTrailers = trailers;
-    }
-
-    public List<Trailer> getTrailers() {
-        return mTrailers;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        mReviews = reviews;
-    }
-
-    public List<Review> getReviews() {
-        return mReviews;
     }
 
     @Override
@@ -213,8 +181,6 @@ public class Movie implements Parcelable {
         mRating = in.readString();
         mReleaseDate = in.readString();
         mIsFavorited = in.readInt() == 1;
-        mTrailers = in.createTypedArrayList(Trailer.CREATOR);
-        mReviews = in.createTypedArrayList(Review.CREATOR);
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -245,7 +211,5 @@ public class Movie implements Parcelable {
         dest.writeString(mRating);
         dest.writeString(mReleaseDate);
         dest.writeInt(mIsFavorited ? 1 : 0);
-        dest.writeTypedList(mTrailers);
-        dest.writeTypedList(mReviews);
     }
 }

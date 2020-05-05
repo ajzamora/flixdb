@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.app.NavUtils;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,7 +39,6 @@ import java.util.List;
 
 public class DetailActivity extends AppCompatActivity
         implements TrailerAdapter.RecyclerItemClickListener {
-    public static final int REQUEST_CODE = 2;
     public static final String EXTRA_TRAILERS = "extra_trailers";
     public static final String EXTRA_REVIEWS = "extra_reviews";
     public static final String EXTRA_MOVIE = "extra_movie";
@@ -153,13 +151,6 @@ public class DetailActivity extends AppCompatActivity
         if (mMovie != null) {
             mId = mMovie.getId();
             populateUI(mMovie);
-            if (mMovie.getTrailers() != null && !mMovie.getTrailers().isEmpty()) {
-                mTrailerAdapter.setData(mMovie.getTrailers());
-            }
-
-            if (mMovie.getReviews() != null && !mMovie.getReviews().isEmpty()) {
-                mReviewAdapter.setData(mMovie.getReviews());
-            }
         }
 
         if (NetworkUtils.isOnline(this)) {
@@ -221,7 +212,7 @@ public class DetailActivity extends AppCompatActivity
                 .load(movie.getBackdropUrl())
                 .into(mBackdropIV);
         Picasso.get()
-                .load(movie.getIsFavorited()? R.drawable.favicon_on_white_48 : R.drawable.favicon_off_white_48)
+                .load(movie.getIsFavorited() ? R.drawable.favicon_on_white_48 : R.drawable.favicon_off_white_48)
                 .into(mFaviconIV);
         mTitleTV.setText(movie.getTitle());
         mPlotTV.setText(movie.getPlot());
@@ -241,17 +232,6 @@ public class DetailActivity extends AppCompatActivity
     }
 
     @Override
-    public void finish() {
-        Intent intent = NavUtils.getParentActivityIntent(this);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(EXTRA_TRAILERS, mTrailerAdapter.getData());
-        intent.putExtra(MainActivity.EXTRA_MOVIE_POS, mMoviePosition);
-        intent.putExtra(DetailActivity.EXTRA_REVIEWS, mReviewAdapter.getData());
-        setResult(RESULT_OK, intent);
-        super.finish();
-    }
-
-    @Override
     public void onListItemClick(int clickedItemIndex) {
         launchTrailer(clickedItemIndex);
     }
@@ -266,12 +246,12 @@ public class DetailActivity extends AppCompatActivity
     public void onFavClick(View view) {
         mMovie.setIsFavorited(!mMovie.getIsFavorited());
         Picasso.get()
-                .load(mMovie.getIsFavorited()? R.drawable.favicon_on_white_48 : R.drawable.favicon_off_white_48)
+                .load(mMovie.getIsFavorited() ? R.drawable.favicon_on_white_48 : R.drawable.favicon_off_white_48)
                 .into(mFaviconIV);
         ContentValues contentValues = new ContentValues();
         contentValues.put(MovieEntry.COLUMN_MOVIE_IS_FAVORITED, mMovie.getIsFavorited());
         Uri updateUri = MovieEntry.CONTENT_URI.buildUpon().appendEncodedPath(mMovie.getId()).build();
-        long id = getContentResolver().update(updateUri , contentValues, null, null);
+        long id = getContentResolver().update(updateUri, contentValues, null, null);
         Log.v("update fav", updateUri + " " + id);
     }
 }

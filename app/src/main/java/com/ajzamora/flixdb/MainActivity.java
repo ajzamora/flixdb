@@ -29,15 +29,12 @@ import com.ajzamora.flixdb.adapters.MovieAdapter;
 import com.ajzamora.flixdb.models.FlixPreferences;
 import com.ajzamora.flixdb.models.Movie;
 import com.ajzamora.flixdb.models.MovieContract.MovieEntry;
-import com.ajzamora.flixdb.models.Review;
-import com.ajzamora.flixdb.models.Trailer;
 import com.ajzamora.flixdb.sync.SyncAdapter;
 import com.ajzamora.flixdb.utils.AccountUtils;
 import com.ajzamora.flixdb.utils.LayoutUtils;
 import com.ajzamora.flixdb.utils.NetworkUtils;
 
 import java.net.HttpURLConnection;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener,
@@ -220,20 +217,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(MainActivity.EXTRA_MOVIE_POS, moviePosition);
         intent.putExtra(DetailActivity.EXTRA_MOVIE, currentMovie);
-        startActivityForResult(intent, DetailActivity.REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == DetailActivity.REQUEST_CODE && resultCode == RESULT_OK) {
-            int moviePosition = data.getIntExtra(MainActivity.EXTRA_MOVIE_POS, MainActivity.EXTRA_MOVIE_POS_DEFAULT);
-            List<Trailer> trailers = data.getParcelableArrayListExtra(DetailActivity.EXTRA_TRAILERS);
-            mMovieAdapter.setTrailerListAt(moviePosition, trailers);
-
-            List<Review> reviews = data.getParcelableArrayListExtra(DetailActivity.EXTRA_REVIEWS);
-            mMovieAdapter.setReviewListAt(moviePosition, reviews);
-        }
+        startActivity(intent);
     }
 
     private void refreshMovies() {
