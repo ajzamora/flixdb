@@ -4,8 +4,10 @@
     <!--    activity labels-->
     <string name="activity_settings_label">Settings</string>
     <string name="activity_details_label">Movie Details</string>
+    <string name="activity_favorites_label">Favorites Details</string>
 
     <!--    menu options-->
+    <string name="action_favorites">Favorites</string>
     <string name="action_settings">Settings</string>
 
     <!--    item movie width-->

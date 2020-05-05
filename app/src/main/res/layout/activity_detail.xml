@@ -25,6 +25,18 @@
         </FrameLayout>
 
         <ImageView
+            android:id="@+id/iv_favicon_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/favicon_off_white_48"
+            app:layout_constraintTop_toTopOf="@id/fl_backdrop_detail"
+            app:layout_constraintBottom_toBottomOf="@id/fl_backdrop_detail"
+            app:layout_constraintStart_toStartOf="@id/fl_backdrop_detail"
+            app:layout_constraintEnd_toEndOf="@id/fl_backdrop_detail"
+            android:onClick="onFavClick"
+            />
+
+        <ImageView
             android:id="@+id/iv_thumbnail_detail"
             android:layout_width="@dimen/detail_thumbnail_width"
             android:layout_height="@dimen/detail_thumbnail_height"

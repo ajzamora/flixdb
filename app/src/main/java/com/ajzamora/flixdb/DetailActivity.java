@@ -1,13 +1,16 @@
 package com.ajzamora.flixdb;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,6 +33,7 @@ import com.ajzamora.flixdb.loaders.ReviewLoader;
 import com.ajzamora.flixdb.loaders.TrailerLoader;
 import com.ajzamora.flixdb.models.FlixPreferences;
 import com.ajzamora.flixdb.models.Movie;
+import com.ajzamora.flixdb.models.MovieContract.MovieEntry;
 import com.ajzamora.flixdb.models.Review;
 import com.ajzamora.flixdb.models.Trailer;
 import com.ajzamora.flixdb.utils.NetworkUtils;
@@ -116,6 +120,7 @@ public class DetailActivity extends AppCompatActivity
     private RecyclerView mDetailRV;
     private ImageView mThumbIV;
     private ImageView mBackdropIV;
+    private ImageView mFaviconIV;
     private TextView mTitleTV;
     private TextView mPlotTV;
     private TextView mRatingTV;
@@ -186,6 +191,7 @@ public class DetailActivity extends AppCompatActivity
 
         mThumbIV = findViewById(R.id.iv_thumbnail_detail);
         mBackdropIV = findViewById(R.id.iv_backdrop_detail);
+        mFaviconIV = findViewById(R.id.iv_favicon_detail);
         mTitleTV = findViewById(R.id.tv_title_detail);
         mPlotTV = findViewById(R.id.tv_plot_detail);
         mRatingTV = findViewById(R.id.tv_rating_detail);
@@ -217,6 +223,9 @@ public class DetailActivity extends AppCompatActivity
         Picasso.get()
                 .load(movie.getBackdropUrl())
                 .into(mBackdropIV);
+        Picasso.get()
+                .load(movie.getIsFavorited()? R.drawable.favicon_on_white_48 : R.drawable.favicon_off_white_48)
+                .into(mFaviconIV);
         mTitleTV.setText(movie.getTitle());
         mPlotTV.setText(movie.getPlot());
         mRatingTV.setText(getString(R.string.detail_rate_label, movie.getRating()));
@@ -262,5 +271,20 @@ public class DetailActivity extends AppCompatActivity
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    public void onFavClick(View view) {
+        Log.v("fav init", " " + mMovie.getIsFavorited());
+        mMovie.setIsFavorited(!mMovie.getIsFavorited());
+        Log.v("fav after", " " + mMovie.getIsFavorited());
+        Picasso.get()
+                .load(mMovie.getIsFavorited()? R.drawable.favicon_on_white_48 : R.drawable.favicon_off_white_48)
+                .into(mFaviconIV);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MovieEntry.COLUMN_MOVIE_IS_FAVORITED, mMovie.getIsFavorited());
+        Uri updateUri = MovieEntry.CONTENT_URI.buildUpon().appendEncodedPath(mMovie.getId()).build();
+        long id = getContentResolver().update(updateUri , contentValues, null, null);
+        Log.v("update fav", updateUri + " " + id);
+
     }
 }
